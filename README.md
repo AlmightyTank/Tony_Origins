@@ -64,6 +64,9 @@ Contents are the same as the normal install, just nested under the full SPT path
 - Original author: Reis
 - Update/Maintenance: CyberByteCraft
 
+## Special Thanks
+And a special thank you to Reis for the foundational work.
+
 ## Version
 - Mod: 6.1.1
 - Targets: SPT ~4.0.11
