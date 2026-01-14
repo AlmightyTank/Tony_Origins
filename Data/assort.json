@@ -908,25 +908,25 @@
         {
             "_id": "0417212448299141954a8a1b",
             "_tpl": "6575ea3060703324250610da",
-            "slotId": "SoftArmorFront",
+            "slotId": "Soft_armor_front",
             "parentId": "041721244830226422357890"
         },
         {
             "_id": "04172124487716987184028f",
             "_tpl": "6575ea4cf6a13a7b7100adc4",
-            "slotId": "SoftArmorBack",
+            "slotId": "Soft_armor_back",
             "parentId": "041721244830226422357890"
         },
         {
             "_id": "0417212448124232843dfb26",
             "_tpl": "6575ea5cf6a13a7b7100adc8",
-            "slotId": "SoftArmorLeft",
+            "slotId": "Soft_armor_left",
             "parentId": "041721244830226422357890"
         },
         {
             "_id": "0417212448451429301e7506",
             "_tpl": "6575ea6760703324250610de",
-            "slotId": "SoftArmorRight",
+            "slotId": "soft_armor_right",
             "parentId": "041721244830226422357890"
         },
         {
@@ -967,25 +967,25 @@
         {
             "_id": "0417213612197973861888d9",
             "_tpl": "654a8b0b0337d53f9102c2ae",
-            "slotId": "SoftArmorFront",
+            "slotId": "soft_armor_front",
             "parentId": "04172136124936582833969e"
         },
         {
             "_id": "04172136122985332389aa1e",
             "_tpl": "654a8976f414fcea4004d78b",
-            "slotId": "SoftArmorBack",
+            "slotId": "soft_armor_back",
             "parentId": "04172136124936582833969e"
         },
         {
             "_id": "04172136124442431199d4f5",
             "_tpl": "654a8b3df414fcea4004d78f",
-            "slotId": "SoftArmorLeft",
+            "slotId": "soft_armor_left",
             "parentId": "04172136124936582833969e"
         },
         {
             "_id": "0417213612338083221e34a1",
             "_tpl": "654a8b80f414fcea4004d797",
-            "slotId": "SoftArmorRight",
+            "slotId": "soft_armor_right",
             "parentId": "04172136124936582833969e"
         },
         {
@@ -1115,28 +1115,28 @@
             "_id": "38d144f552f736e2e17be207",
             "_tpl": "65764275d8537eb26a0355e9",
             "parentId": "a366ddeda8cac3ccfd393118",
-            "slotId": "SoftArmorFront",
+            "slotId": "Soft_armor_front",
             "upd": {}
         },
         {
             "_id": "9cd80c5f4c06d67a4b9bb0b2",
             "_tpl": "657642b0e6d5dd75f40688a5",
             "parentId": "a366ddeda8cac3ccfd393118",
-            "slotId": "SoftArmorBack",
+            "slotId": "Soft_armor_back",
             "upd": {}
         },
         {
             "_id": "c9a939879ce24bf8af3a952d",
             "_tpl": "6576434820cc24d17102b148",
             "parentId": "a366ddeda8cac3ccfd393118",
-            "slotId": "SoftArmorLeft",
+            "slotId": "Soft_armor_left",
             "upd": {}
         },
         {
             "_id": "78c5cb8120c5778e77a7c29c",
             "_tpl": "657643732bc38ef78e076477",
             "parentId": "a366ddeda8cac3ccfd393118",
-            "slotId": "SoftArmorRight",
+            "slotId": "soft_armor_right",
             "upd": {}
         },
         {
@@ -1188,25 +1188,25 @@
         {
             "_id": "04172017086544432800f5e8",
             "_tpl": "6575ce3716c2762fba0057fd",
-            "slotId": "SoftArmorFront",
+            "slotId": "Soft_armor_front",
             "parentId": "04172017088334346745fb10"
         },
         {
             "_id": "0417201708561439327f1b3b",
             "_tpl": "6575ce45dc9932aed601c616",
-            "slotId": "SoftArmorBack",
+            "slotId": "Soft_armor_back",
             "parentId": "04172017088334346745fb10"
         },
         {
             "_id": "04172017083595987439dc5b",
             "_tpl": "6575ce5016c2762fba005802",
-            "slotId": "SoftArmorLeft",
+            "slotId": "Soft_armor_left",
             "parentId": "04172017088334346745fb10"
         },
         {
             "_id": "0417201708126120923f2620",
             "_tpl": "6575ce5befc786cd9101a671",
-            "slotId": "SoftArmorRight",
+            "slotId": "soft_armor_right",
             "parentId": "04172017088334346745fb10"
         },
         {
@@ -1271,25 +1271,25 @@
         {
             "_id": "0417210856938691798ecbed",
             "_tpl": "6575c2adefc786cd9101a5d9",
-            "slotId": "SoftArmorFront",
+            "slotId": "Soft_armor_front",
             "parentId": "0417210856575419618416b7"
         },
         {
             "_id": "0417210856730970249dfa57",
             "_tpl": "6575c2be52b7f8c76a05ee25",
-            "slotId": "SoftArmorBack",
+            "slotId": "Soft_armor_back",
             "parentId": "0417210856575419618416b7"
         },
         {
             "_id": "0417210856758330885fd55a",
             "_tpl": "6575c2cd52b7f8c76a05ee29",
-            "slotId": "SoftArmorLeft",
+            "slotId": "Soft_armor_left",
             "parentId": "0417210856575419618416b7"
         },
         {
             "_id": "041721085636252572481ac0",
             "_tpl": "6575c2d852b7f8c76a05ee2d",
-            "slotId": "SoftArmorRight",
+            "slotId": "soft_armor_right",
             "parentId": "0417210856575419618416b7"
         },
         {
@@ -1361,28 +1361,28 @@
             "_id": "0b17e3979177093fc24eec29",
             "_tpl": "65732688d9d89ff7ac0d9c4c",
             "parentId": "1e5d21aee89bc9b2f6e68f9c",
-            "slotId": "SoftArmorFront",
+            "slotId": "Soft_armor_front",
             "upd": {}
         },
         {
             "_id": "c209ea17f269f88e9203633b",
             "_tpl": "657326978c1cc6dcd9098b56",
             "parentId": "1e5d21aee89bc9b2f6e68f9c",
-            "slotId": "SoftArmorBack",
+            "slotId": "Soft_armor_back",
             "upd": {}
         },
         {
             "_id": "2c8815fe2812753c64be0d59",
             "_tpl": "657326a28c1cc6dcd9098b5a",
             "parentId": "1e5d21aee89bc9b2f6e68f9c",
-            "slotId": "SoftArmorLeft",
+            "slotId": "Soft_armor_left",
             "upd": {}
         },
         {
             "_id": "aa97a99f07b01f859656d624",
             "_tpl": "657326b08c1cc6dcd9098b5e",
             "parentId": "1e5d21aee89bc9b2f6e68f9c",
-            "slotId": "SoftArmorRight",
+            "slotId": "soft_armor_right",
             "upd": {}
         },
         {
@@ -10150,9 +10150,156 @@
                     "SelectedMode": 0
                 }
             }
+        },
+        {
+            "_id": "690a06bc6c65be6d001b4cd1",
+            "_tpl": "67d0576f29f580ebc10efd08",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "Repairable": {
+                    "Durability": 100,
+                    "MaxDurability": 100
+                },
+                "StackObjectsCount": 1,
+                "UnlimitedCount": false
+            }
+        },
+        {
+            "_id": "690a06bc6c65be6d001b4d0a",
+            "_tpl": "67d4178bffb910d21f04720a",
+            "parentId": "690a06bc6c65be6d001b4cd1",
+            "slotId": "mod_barrel"
+        },
+        {
+            "_id": "690a06bc6c65be6d001b4d18",
+            "_tpl": "67d417c023ec241bb70d4896",
+            "parentId": "690a06bc6c65be6d001b4d0a",
+            "slotId": "mod_gas_block"
+        },
+        {
+            "_id": "690a06bc6c65be6d001b4d32",
+            "_tpl": "67d41883f378a36c4706eeb7",
+            "parentId": "690a06bc6c65be6d001b4d0a",
+            "slotId": "mod_muzzle"
+        },
+        {
+            "_id": "690a06bc6c65be6d001b4d3b",
+            "_tpl": "67d416e19bd76ef20f0e743b",
+            "parentId": "690a06bc6c65be6d001b4cd1",
+            "slotId": "mod_reciever"
+        },
+        {
+            "_id": "690a06bc6c65be6d001b4d43",
+            "_tpl": "5aa66a9be5b5b0214e506e89",
+            "parentId": "690a06bc6c65be6d001b4d3b",
+            "slotId": "mod_scope"
+        },
+        {
+            "_id": "690a06bc6c65be6d001b4d4b",
+            "_tpl": "5aa66be6e5b5b0214e506e97",
+            "parentId": "690a06bc6c65be6d001b4d43",
+            "slotId": "mod_scope"
+        },
+        {
+            "_id": "690a06bc6c65be6d001b4d5c",
+            "_tpl": "6087e663132d4d12c81fd96b",
+            "parentId": "690a06bc6c65be6d001b4cd1",
+            "slotId": "mod_pistol_grip"
+        },
+        {
+            "_id": "690a06bc6c65be6d001b4d65",
+            "_tpl": "67d418d0ffb910d21f04720e",
+            "parentId": "690a06bc6c65be6d001b4cd1",
+            "slotId": "mod_magazine"
+        },
+        {
+            "_id": "67dc2648ba5b79876906a166",
+            "_tpl": "67dc2648ba5b79876906a166",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "StackObjectsCount": 300,
+                "UnlimitedCount": false
+            }
+        },
+        {
+            "_id": "67d418d0ffb910d21f04720e",
+            "_tpl": "67d418d0ffb910d21f04720e",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "StackObjectsCount": 5,
+                "UnlimitedCount": false
+            }
+        },
+        {
+            "_id": "676bf44c5539167c3603e869",
+            "_tpl": "676bf44c5539167c3603e869",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "StackObjectsCount": 2,
+                "UnlimitedCount": false
+            }
+        },
+        {
+            "_id": "67446fdd752be02c220f27b3",
+            "_tpl": "67446fdd752be02c220f27b3",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "StackObjectsCount": 30,
+                "UnlimitedCount": false
+            }
         }
     ],
     "barter_scheme": {
+        "690a06bc6c65be6d001b4cd1": [
+            [
+                {
+                    "_comment": "AK-50 .50 BMG sniper rifle",
+                    "count": 5000000,
+                    "_tpl": "5449016a4bdc2d6f028b456f"
+                }
+            ]
+        ],
+        "67dc2648ba5b79876906a166": [
+            [
+                {
+                    "_comment": ".50 BMG M903 SLAP",
+                    "count": 50000,
+                    "_tpl": "5449016a4bdc2d6f028b456f"
+                }
+            ]
+        ],
+        "67d418d0ffb910d21f04720e": [
+            [
+                {
+                    "_comment": "M82A1 .50 BMG 10-round magazine",
+                    "count": 10000,
+                    "_tpl": "5449016a4bdc2d6f028b456f"
+                }
+            ]
+        ],
+        "676bf44c5539167c3603e869": [
+            [
+                {
+                    "_comment": "RShG-2 72.5mm rocket launcher",
+                    "count": 5000000,
+                    "_tpl": "5449016a4bdc2d6f028b456f"
+                }
+            ]
+        ],
+        "67446fdd752be02c220f27b3": [
+            [
+                {
+                    "_comment": "RShG-2 72.5mm thermobaric assault rocket",
+                    "count": 35000,
+                    "_tpl": "5449016a4bdc2d6f028b456f"
+                }
+            ]
+        ],
         "64afc71497cf3a403c01ff38": [
             [
                 {
@@ -12587,6 +12734,11 @@
         ]
     },
     "loyal_level_items": {
+        "690a06bc6c65be6d001b4cd1": 1,
+        "67dc2648ba5b79876906a166": 1,
+        "67d418d0ffb910d21f04720e": 1,
+        "676bf44c5539167c3603e869": 1,
+        "67446fdd752be02c220f27b3": 1,
         "64afc71497cf3a403c01ff38": 1,
         "656fa8d700d62bcd2e024084": 1,
         "656f63c027aed95beb08f62c": 1,
