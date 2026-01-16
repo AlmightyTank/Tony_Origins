@@ -46,8 +46,10 @@ jobs:
 
           New-Item -ItemType Directory -Force -Path $target | Out-Null
 
-          # Copy build output (dll, deps, Data, etc.)
-          Copy-Item -Path (Join-Path $outDir "*") -Destination $target -Recurse -Force
+          # Copy build output (dll, deps, Data) - Explicitly exclude PDBs etc.
+          Copy-Item -Path (Join-Path $outDir "Priscilu_Origins.dll") -Destination $target -Force
+          Copy-Item -Path (Join-Path $outDir "Priscilu_Origins.deps.json") -Destination $target -Force
+          Copy-Item -Path (Join-Path $outDir "Data") -Destination $target -Recurse -Force
 
           # Create zip
           $zipName = "Priscilu_Origins_v2-${{ github.ref_name }}.zip"
