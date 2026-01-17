@@ -5,6 +5,7 @@ namespace PrisciluOrigins.Config;
 public class SettingsConfig
 {
     public int MinLevel { get; set; } = 1;
+    public bool UnlockedByDefault { get; set; } = false;
     public int RestockTimerSeconds { get; set; } = 3600;
 }
 
