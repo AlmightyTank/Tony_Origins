@@ -31,13 +31,14 @@ public record ModMetadata : AbstractModMetadata
 public class PrisciluOriginsMod(
     ModHelper modHelper,
     ImageRouter imageRouter,
-    ConfigServer configServer,
-    TimeUtil timeUtil,
+    TraderConfig traderConfig, // [NEW] Direct Injection
+    RagfairConfig ragfairConfig, // [NEW] Direct Injection
+    DatabaseServer databaseServer,
     AddCustomTraderHelper addCustomTraderHelper)
     : IOnLoad
 {
-    private readonly TraderConfig _traderConfig = configServer.GetConfig<TraderConfig>();
-    private readonly RagfairConfig _ragfairConfig = configServer.GetConfig<RagfairConfig>();
+    private readonly TraderConfig _traderConfig = traderConfig;
+    private readonly RagfairConfig _ragfairConfig = ragfairConfig;
 
     public Task OnLoad()
     {
@@ -47,15 +48,48 @@ public class PrisciluOriginsMod(
         var assort = modHelper.GetJsonDataFromFile<TraderAssort>(pathToMod, "Data/assort.json");
         var traderImagePath = Path.Combine(pathToMod, "Data/Priscilu_Origins.jpg");
 
+        // [NEW] Load Configuration
+        var config = new PrisciluOrigins.Config.PrisciluConfig(pathToMod, databaseServer);
+        config.LoadOrGenerate(traderBase, assort);
+
+        // [NEW] Apply Settings (Level & Unlock)
+        traderBase.UnlockedByDefault = config.Settings.UnlockedByDefault;
+        if (traderBase.LoyaltyLevels.Count > 0)
+        {
+            traderBase.LoyaltyLevels[0].MinLevel = config.Settings.MinLevel;
+        }
+
+        // [NEW] Apply Price Overrides
+        foreach (var priceConfig in config.Prices)
+        {
+            // Find item by TPL
+            foreach (var item in assort.Items)
+            {
+               var tpl = (string)((dynamic)item)._tpl;
+               if (tpl == priceConfig.TplId && item.ParentId == "hideout")
+               {
+                   // Found the item, update its price in BarterScheme
+                   if (assort.BarterScheme.ContainsKey(item.Id))
+                   {
+                        var scheme = assort.BarterScheme[item.Id][0][0];
+                        scheme.Count = priceConfig.Price;
+                        // Map config currency string to ID if needed, simplified for now assuming RUB mostly
+                        // (You could expand this to switch currency completely if requested)
+                   }
+               }
+            }
+        }
+
         var avatarRoute = traderBase.Avatar ?? string.Empty;
         avatarRoute = avatarRoute.Replace(".png", "").Replace(".jpg", "").Replace(".jpeg", "");
         imageRouter.AddRoute(avatarRoute, traderImagePath);
 
+        // [NEW] Use Configured Timer
         addCustomTraderHelper.SetTraderUpdateTime(
             _traderConfig,
             traderBase,
-            20,
-            20);
+            config.Settings.RestockTimerSeconds,
+            config.Settings.RestockTimerSeconds);
 
         _ragfairConfig.Traders.TryAdd(traderBase.Id, true);
         addCustomTraderHelper.AddTraderToDb(traderBase, assort);
@@ -63,9 +97,6 @@ public class PrisciluOriginsMod(
         var localeFirstName = traderBase.Nickname ?? traderBase.Name ?? "Priscilu";
         var localeDescription = string.Empty;
         addCustomTraderHelper.AddTraderToLocales(traderBase, localeFirstName, localeDescription);
-
-        // Assort is now added directly during creation, no need to overwrite
-        // addCustomTraderHelper.OverwriteTraderAssort(traderBase.Id, assort);
 
         return Task.CompletedTask;
     }
