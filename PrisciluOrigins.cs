@@ -58,11 +58,13 @@ public class PrisciluOriginsMod(
             traderBase.LoyaltyLevels[0].MinLevel = config.Settings.MinLevel;
         }
 
-        // [LEVEL-BASED UNLOCK] Configure the service to check player level on save/load
+        // [LEVEL-BASED UNLOCK] Configure service to check player level
         if (!config.Settings.UnlockedByDefault)
         {
+            // Configure service for level-based unlock checks
             TraderUnlockService.EnableLevelLock = true;
             TraderUnlockService.MinLevelRequired = config.Settings.MinLevel;
+            
             Console.WriteLine($"[PrisciluOrigins] Level-based unlock enabled. Required level: {config.Settings.MinLevel}");
         }
         else

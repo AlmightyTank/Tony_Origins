@@ -6,18 +6,38 @@ using SPTarkov.Server.Core.Servers;
 namespace PrisciluOrigins;
 
 /// <summary>
-/// Helper class to check and unlock trader based on player level.
+/// Service to check and unlock trader based on player level.
+/// Uses reflection to safely access profile data across SPT versions.
 /// </summary>
 [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 2)]
-public class TraderUnlockService(
-    ISptLogger<TraderUnlockService> logger,
-    SaveServer saveServer)
+public class TraderUnlockService : IOnLoad
 {
+    private readonly ISptLogger<TraderUnlockService> _logger;
+    private readonly SaveServer _saveServer;
+    
     private const string PrisciluTraderId = "6748adca5c70634464b214a8";
     
     // Static config set by main mod
     public static int MinLevelRequired { get; set; } = 1;
     public static bool EnableLevelLock { get; set; } = false;
+    
+    public TraderUnlockService(
+        ISptLogger<TraderUnlockService> logger,
+        SaveServer saveServer)
+    {
+        _logger = logger;
+        _saveServer = saveServer;
+    }
+    
+    public Task OnLoad()
+    {
+        if (EnableLevelLock)
+        {
+            _logger.Info($"[PrisciluOrigins] TraderUnlockService active - checking profiles on load");
+            CheckAllProfiles();
+        }
+        return Task.CompletedTask;
+    }
     
     public void CheckAllProfiles()
     {
@@ -28,71 +48,87 @@ public class TraderUnlockService(
         
         try
         {
-            var profiles = saveServer.GetProfiles();
+            var profiles = _saveServer.GetProfiles();
             foreach (var (sessionId, profile) in profiles)
             {
-                CheckAndUnlockTraderForSession(sessionId);
+                CheckAndUnlockTrader(sessionId, profile);
             }
         }
         catch (Exception ex)
         {
-            logger.Warning($"[PrisciluOrigins] Error checking profiles: {ex.Message}");
+            _logger.Warning($"[PrisciluOrigins] Error checking profiles: {ex.Message}");
         }
     }
     
-    public void CheckAndUnlockTraderForSession(string sessionId)
+    public void CheckAndUnlockTrader(string sessionId, object profile)
     {
-        if (!EnableLevelLock)
+        if (!EnableLevelLock || profile == null)
         {
             return;
         }
         
         try
         {
-            var profile = saveServer.GetProfile(sessionId);
-            if (profile == null)
-            {
-                return;
-            }
+            // Access PMC character using reflection
+            var charactersProperty = profile.GetType().GetProperty("Characters");
+            if (charactersProperty == null) return;
             
-            // Use dynamic to access PMC character data
-            dynamic profileDyn = profile;
-            var pmcProfile = profileDyn.Characters?.Pmc;
-            if (pmcProfile == null)
-            {
-                return;
-            }
+            var characters = charactersProperty.GetValue(profile);
+            if (characters == null) return;
             
-            int playerLevel = (int)(pmcProfile.Info?.Level ?? 0);
+            var pmcProperty = characters.GetType().GetProperty("Pmc");
+            if (pmcProperty == null) return;
             
-            // Check if trader exists in profile's tradersInfo
-            var tradersInfo = pmcProfile.TradersInfo;
-            if (tradersInfo != null)
+            var pmcProfile = pmcProperty.GetValue(characters);
+            if (pmcProfile == null) return;
+            
+            // Get player level
+            var infoProperty = pmcProfile.GetType().GetProperty("Info");
+            if (infoProperty == null) return;
+            
+            var info = infoProperty.GetValue(pmcProfile);
+            if (info == null) return;
+            
+            var levelProperty = info.GetType().GetProperty("Level");
+            if (levelProperty == null) return;
+            
+            var levelValue = levelProperty.GetValue(info);
+            int playerLevel = levelValue != null ? Convert.ToInt32(levelValue) : 0;
+            
+            // Get TradersInfo
+            var tradersInfoProperty = pmcProfile.GetType().GetProperty("TradersInfo");
+            if (tradersInfoProperty == null) return;
+            
+            var tradersInfo = tradersInfoProperty.GetValue(pmcProfile);
+            if (tradersInfo == null) return;
+            
+            // Try to get the trader info from dictionary
+            if (tradersInfo is System.Collections.IDictionary tradersDict)
             {
-                try
+                if (tradersDict.Contains(PrisciluTraderId))
                 {
-                    var traderInfo = ((IDictionary<string, object>)tradersInfo)[PrisciluTraderId];
+                    var traderInfo = tradersDict[PrisciluTraderId];
                     if (traderInfo != null)
                     {
-                        dynamic traderDyn = traderInfo;
-                        bool unlocked = traderDyn.Unlocked ?? false;
-                        
-                        if (playerLevel >= MinLevelRequired && !unlocked)
+                        var unlockedProperty = traderInfo.GetType().GetProperty("Unlocked");
+                        if (unlockedProperty != null)
                         {
-                            traderDyn.Unlocked = true;
-                            logger.Info($"[PrisciluOrigins] Trader unlocked for session {sessionId} at level {playerLevel}");
+                            var unlockedValue = unlockedProperty.GetValue(traderInfo);
+                            bool isUnlocked = unlockedValue != null && (bool)unlockedValue;
+                            
+                            if (playerLevel >= MinLevelRequired && !isUnlocked)
+                            {
+                                unlockedProperty.SetValue(traderInfo, true);
+                                _logger.Info($"[PrisciluOrigins] Trader UNLOCKED for session {sessionId} - Player Level: {playerLevel} >= Required: {MinLevelRequired}");
+                            }
                         }
                     }
-                }
-                catch
-                {
-                    // Trader not in profile yet
                 }
             }
         }
         catch (Exception ex)
         {
-            logger.Warning($"[PrisciluOrigins] Error checking trader unlock for {sessionId}: {ex.Message}");
+            _logger.Warning($"[PrisciluOrigins] Error checking trader unlock for {sessionId}: {ex.Message}");
         }
     }
 }
