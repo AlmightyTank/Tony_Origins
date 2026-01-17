@@ -120,6 +120,8 @@ public class PrisciluConfig
         else
         {
             Prices = new List<PriceConfigItem>();
+            // [FIX] Locale handling re-enabled for "en"
+            var locales = _databaseServer.GetTables().Locales.Global["en"]; 
 
             foreach (var item in assortJson.Items)
             {
@@ -140,12 +142,17 @@ public class PrisciluConfig
                         continue;
                     }
 
-                    var name = tpl; 
+                    // Try to find name in locales
+                    var itemName = tpl;
+                    if (locales.Value != null && locales.Value.TryGetValue($"{tpl} Name", out var nameVal))
+                    {
+                        itemName = nameVal.ToString();
+                    } 
 
                     Prices.Add(new PriceConfigItem
                     {
                         TplId = tpl,
-                        ItemName = name,
+                        ItemName = itemName,
                         Price = scheme.Count ?? 0, 
                         Currency = scheme.Template == "5449016a4bdc2d6f028b456f" ? "RUB" : 
                                    scheme.Template == "5696686a4bdc2da3298b456a" ? "USD" : 
