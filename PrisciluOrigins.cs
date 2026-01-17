@@ -73,6 +73,14 @@ public class PrisciluOriginsMod(
                 System.IO.File.WriteAllText(questTempPath, jsonText);
                 var quests = modHelper.GetJsonDataFromFile<List<SPTarkov.Server.Core.Models.Eft.Common.Tables.Quest>>(pathToMod, "Data/quest_temp.json");
                 addCustomTraderHelper.AddQuest(quests);
+                
+                // Inject Quest Locales
+                addCustomTraderHelper.AddQuestLocales(
+                    "PrisciluUnlockQuest",
+                    "Unlock Priscilu Origins",
+                    $"Reach level {config.Settings.MinLevel} to unlock Priscilu Origins trader.",
+                    $"Reach level {config.Settings.MinLevel}"
+                );
             }
             catch (Exception ex)
             {
