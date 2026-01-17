@@ -6,6 +6,7 @@ obj/
 *.user
 *.suo
 *.cache
+*.agent
 
 # OS
 .DS_Store

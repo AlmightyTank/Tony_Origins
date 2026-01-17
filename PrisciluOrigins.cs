@@ -52,7 +52,9 @@ public class PrisciluOriginsMod(
         config.LoadOrGenerate(traderBase, assort);
 
         // [NEW] Apply Settings (Level & Unlock)
-        traderBase.UnlockedByDefault = config.Settings.UnlockedByDefault;
+        // User requested that if level is too low, a lock should be shown. 
+        // This requires UnlockedByDefault to be false so the game checks level requirements.
+        traderBase.UnlockedByDefault = false; 
         if (traderBase.LoyaltyLevels.Count > 0)
         {
             traderBase.LoyaltyLevels[0].MinLevel = config.Settings.MinLevel;
