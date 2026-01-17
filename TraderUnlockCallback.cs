@@ -34,7 +34,7 @@ public class TraderUnlockService : IOnLoad, IDisposable
     {
         if (EnableLevelLock)
         {
-            _logger.Info($"[PrisciluOrigins] Unlock Service Active. Required Level: {MinLevelRequired}");
+            PrisciluLogger.Log($"Unlock Service Active. Required Level: {MinLevelRequired}");
             // Initial check
             CheckAllProfiles();
             
@@ -60,6 +60,9 @@ public class TraderUnlockService : IOnLoad, IDisposable
         try
         {
             var profiles = _saveServer.GetProfiles();
+            // Optional: Log every check tick? That's spammy. Maybe only if profiles found.
+            // PrisciluLogger.Log($"Checking {profiles.Count} profiles...");
+            
             foreach (var (sessionId, profile) in profiles)
             {
                 CheckAndUnlockTrader(sessionId, profile);
@@ -67,77 +70,127 @@ public class TraderUnlockService : IOnLoad, IDisposable
         }
         catch (Exception ex)
         {
-            // Suppress log spam for timer
-            // _logger.Warning($"[PrisciluOrigins] Error checking profiles: {ex.Message}");
+            PrisciluLogger.Log($"Error checking profiles: {ex.Message}");
         }
     }
     
+    // Helper to get value from Property OR Field
+    private object? GetMemberValue(object target, string name)
+    {
+        if (target == null) return null;
+        var type = target.GetType();
+        var bindingFlags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.IgnoreCase;
+        
+        // Try Property
+        var prop = type.GetProperty(name, bindingFlags);
+        if (prop != null) return prop.GetValue(target);
+        
+        // Try Field
+        var field = type.GetField(name, bindingFlags);
+        if (field != null) return field.GetValue(target);
+        
+        return null;
+    }
+
     public void CheckAndUnlockTrader(string sessionId, object profile)
     {
         if (!EnableLevelLock || profile == null) return;
         
         try
         {
-            // Access PMC character using reflection
-            var charactersProperty = profile.GetType().GetProperty("Characters");
-            if (charactersProperty == null) return;
+            // Access Characters
+            // [FIX] Found member "CharacterData" via reflection dump
+            var characters = GetMemberValue(profile, "Characters") 
+                             ?? GetMemberValue(profile, "CharacterData");
+            if (characters == null) 
+            {
+                PrisciluLogger.Log($"Session {sessionId}: CharacterData missing.");
+                return;
+            }
             
-            var characters = charactersProperty.GetValue(profile);
-            if (characters == null) return;
+            var pmcProfile = GetMemberValue(characters, "Pmc") 
+                             ?? GetMemberValue(characters, "PmcData")
+                             ?? GetMemberValue(characters, "Pmcs");
             
-            var pmcProperty = characters.GetType().GetProperty("Pmc");
-            if (pmcProperty == null) return;
+            if (pmcProfile == null) 
+            {
+                 PrisciluLogger.Log($"Session {sessionId}: PmcData missing.");
+                 return;
+            }
             
-            var pmcProfile = pmcProperty.GetValue(characters);
-            if (pmcProfile == null) return;
-            
-            // Get player level
-            var infoProperty = pmcProfile.GetType().GetProperty("Info");
-            if (infoProperty == null) return;
-            
-            var info = infoProperty.GetValue(pmcProfile);
+            var info = GetMemberValue(pmcProfile, "Info");
             if (info == null) return;
             
-            var levelProperty = info.GetType().GetProperty("Level");
-            if (levelProperty == null) return;
-            
-            var levelValue = levelProperty.GetValue(info);
+            var levelValue = GetMemberValue(info, "Level");
             int playerLevel = levelValue != null ? Convert.ToInt32(levelValue) : 0;
             
-            // Get TradersInfo
-            var tradersInfoProperty = pmcProfile.GetType().GetProperty("TradersInfo");
-            if (tradersInfoProperty == null) return;
-            
-            var tradersInfo = tradersInfoProperty.GetValue(pmcProfile);
+            var tradersInfo = GetMemberValue(pmcProfile, "TradersInfo");
             if (tradersInfo == null) return;
             
             // Try to get the trader info from dictionary
             if (tradersInfo is System.Collections.IDictionary tradersDict)
             {
-                if (tradersDict.Contains(PrisciluTraderId))
+                object? targetKey = null;
+                foreach (var key in tradersDict.Keys)
                 {
-                    var traderInfo = tradersDict[PrisciluTraderId];
+                    if (key.ToString() == PrisciluTraderId)
+                    {
+                        targetKey = key;
+                        break;
+                    }
+                }
+
+                if (targetKey != null)
+                {
+                    var traderInfo = tradersDict[targetKey];
                     if (traderInfo != null)
                     {
-                        var unlockedProperty = traderInfo.GetType().GetProperty("Unlocked");
-                        if (unlockedProperty != null)
+                        var unlockedValue = GetMemberValue(traderInfo, "Unlocked");
+                        bool isUnlocked = unlockedValue != null && (bool)unlockedValue;
+
+                        // Log status periodically? No, only on change or explicit debug request.
+                        // But user asked for "everything in background".
+                        // Logging every 10s for every user is too much IO.
+                        // I will log ONLY if it CHANGES state.
+                        
+                        if (playerLevel >= MinLevelRequired && !isUnlocked)
                         {
-                            var unlockedValue = unlockedProperty.GetValue(traderInfo);
-                            bool isUnlocked = unlockedValue != null && (bool)unlockedValue;
-                            
-                            if (playerLevel >= MinLevelRequired && !isUnlocked)
-                            {
-                                unlockedProperty.SetValue(traderInfo, true);
-                                _logger.Info($"[PrisciluOrigins] LIVE UNLOCK: Session {sessionId} reached Level {playerLevel}");
-                            }
+                            SetUnlocked(traderInfo, true);
+                            var msg = $"LIVE UNLOCK: Session {sessionId} reached Level {playerLevel}. UNLOCKED!";
+                            _logger.Info($"[PrisciluOrigins] {msg}"); // Keep console for critical event
+                            PrisciluLogger.Log(msg);
                         }
                     }
                 }
+                else
+                {
+                     // Only log warning once? Or every time?
+                     // Start spamming file is better than silent failure for debug mode.
+                     // PrisciluLogger.Log($"WARNING: Trader {PrisciluTraderId} missing in TradersInfo dict for {sessionId}.");
+                }
             }
         }
-        catch
+        catch (Exception ex)
         {
-            // Ignore errors for smoothness
+            PrisciluLogger.Log($"EXCEPTION in Unlock: {ex.Message}");
+        }
+    }
+
+    private void SetUnlocked(object target, bool value)
+    {
+        var type = target.GetType();
+        var bindingFlags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.IgnoreCase;
+        
+        var prop = type.GetProperty("Unlocked", bindingFlags);
+        if (prop != null) 
+        {
+            prop.SetValue(target, value);
+            return;
+        }
+        var field = type.GetField("Unlocked", bindingFlags);
+        if (field != null)
+        {
+            field.SetValue(target, value);
         }
     }
 }

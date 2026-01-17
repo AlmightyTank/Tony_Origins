@@ -43,6 +43,10 @@ public class PrisciluOriginsMod(
     public Task OnLoad()
     {
         var pathToMod = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
+        
+        // [DEBUG LOG] Initialize Logger
+        PrisciluLogger.Init(pathToMod);
+        PrisciluLogger.Log("Mod OnLoad started.");
 
         var traderBase = modHelper.GetJsonDataFromFile<TraderBase>(pathToMod, "Data/base.json");
         var assort = modHelper.GetJsonDataFromFile<TraderAssort>(pathToMod, "Data/assort.json");
@@ -69,12 +73,12 @@ public class PrisciluOriginsMod(
             // Register execution of checks on server start
             traderUnlockService.OnLoad();
             
-            Console.WriteLine($"[PrisciluOrigins] Level-based unlock enabled. Required level: {config.Settings.MinLevel}");
+            PrisciluLogger.Log($"Level-based unlock enabled. Required level: {config.Settings.MinLevel}");
         }
         else
         {
             TraderUnlockService.EnableLevelLock = false;
-            Console.WriteLine("[PrisciluOrigins] Trader unlocked by default.");
+            PrisciluLogger.Log("Trader unlocked by default.");
         }
 
         // [NEW] Apply Price Overrides
