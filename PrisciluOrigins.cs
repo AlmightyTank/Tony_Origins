@@ -31,14 +31,13 @@ public record ModMetadata : AbstractModMetadata
 public class PrisciluOriginsMod(
     ModHelper modHelper,
     ImageRouter imageRouter,
-    TraderConfig traderConfig, // [NEW] Direct Injection
-    RagfairConfig ragfairConfig, // [NEW] Direct Injection
+    ConfigServer configServer, // [FIX] Revert to ConfigServer
     DatabaseServer databaseServer,
     AddCustomTraderHelper addCustomTraderHelper)
     : IOnLoad
 {
-    private readonly TraderConfig _traderConfig = traderConfig;
-    private readonly RagfairConfig _ragfairConfig = ragfairConfig;
+    private readonly TraderConfig _traderConfig = configServer.GetConfig<TraderConfig>();
+    private readonly RagfairConfig _ragfairConfig = configServer.GetConfig<RagfairConfig>();
 
     public Task OnLoad()
     {
