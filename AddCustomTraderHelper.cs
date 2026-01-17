@@ -110,8 +110,7 @@ public class AddCustomTraderHelper(
                 lazyloadedLocaleData.TryAdd($"{questId} successMessageText", "Congratulations! You have unlocked Priscilu Origins.");
                 lazyloadedLocaleData.TryAdd($"{questId} failMessageText", "You failed to unlock Priscilu Origins.");
                 // Condition locales
-                lazyloadedLocaleData.TryAdd("PrisciluLevelCondition", conditionDescription);
-                lazyloadedLocaleData.TryAdd("PrisciluFinishCondition", conditionDescription);
+                lazyloadedLocaleData.TryAdd("67890abcdef01234567890ad", conditionDescription);
                 return lazyloadedLocaleData;
             });
         }

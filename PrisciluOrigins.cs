@@ -82,7 +82,7 @@ public class PrisciluOriginsMod(
                     
                     // Inject Quest Locales
                     addCustomTraderHelper.AddQuestLocales(
-                        "PrisciluUnlockQuest",
+                        "67890abcdef01234567890ab",
                         "Unlock Priscilu Origins",
                         $"Reach level {config.Settings.MinLevel} to unlock Priscilu Origins trader.",
                         $"Reach level {config.Settings.MinLevel}"
