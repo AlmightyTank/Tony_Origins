@@ -58,6 +58,35 @@ public class PrisciluOriginsMod(
             traderBase.LoyaltyLevels[0].MinLevel = config.Settings.MinLevel;
         }
 
+        // [NEW] Load and Inject Quest
+        var questPath = Path.Combine(pathToMod, "Data/quest.json");
+        var questTempPath = Path.Combine(pathToMod, "Data/quest_temp.json");
+        
+        if (System.IO.File.Exists(questPath))
+        {
+            var jsonText = System.IO.File.ReadAllText(questPath);
+            // Replace placeholder level "15" with actual config level
+            jsonText = jsonText.Replace("\"value\": \"15\"", $"\"value\": \"{config.Settings.MinLevel}\"");
+            
+            try 
+            {
+                System.IO.File.WriteAllText(questTempPath, jsonText);
+                var quests = modHelper.GetJsonDataFromFile<List<SPTarkov.Server.Core.Models.Eft.Common.Tables.Quest>>(pathToMod, "Data/quest_temp.json");
+                addCustomTraderHelper.AddQuest(quests);
+            }
+            catch (Exception ex)
+            {
+                // Fallback
+            }
+            finally
+            {
+                if (System.IO.File.Exists(questTempPath))
+                {
+                    System.IO.File.Delete(questTempPath);
+                }
+            }
+        }
+
         // [NEW] Apply Price Overrides
         foreach (var priceConfig in config.Prices)
         {

@@ -1,0 +1,54 @@
+[
+    {
+        "_id": "PrisciluUnlockQuest",
+        "traderId": "5485a8d04bdc2dff2f8b4569",
+        "location": "56f40101d2720b2a4d8b45d6",
+        "image": "/files/quest/icon/596b455186f77457cb50eccb.jpg",
+        "type": "Completion",
+        "isKey": false,
+        "restartable": false,
+        "instantComplete": false,
+        "secretQuest": false,
+        "canShowNotificationsInGame": true,
+        "rewards": {
+            "Started": [],
+            "Success": [
+                {
+                    "value": "1",
+                    "id": "PrisciluUnlockReward",
+                    "type": "TraderUnlock",
+                    "index": 0,
+                    "target": "PrisciluOrigins"
+                }
+            ],
+            "Fail": []
+        },
+        "conditions": {
+            "AvailableForStart": [
+                {
+                    "_parent": "Level",
+                    "_props": {
+                        "compareMethod": ">=",
+                        "value": "15",
+                        "index": 0,
+                        "parentId": "",
+                        "id": "PrisciluLevelCondition"
+                    }
+                }
+            ],
+            "AvailableForFinish": [
+                {
+                    "_parent": "Level",
+                    "_props": {
+                        "compareMethod": ">=",
+                        "value": "15",
+                        "index": 0,
+                        "parentId": "",
+                        "id": "PrisciluFinishCondition"
+                    }
+                }
+            ],
+            "Fail": []
+        }
+    }
+]

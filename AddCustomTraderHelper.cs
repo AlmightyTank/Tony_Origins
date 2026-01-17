@@ -85,4 +85,16 @@ public class AddCustomTraderHelper(
 
         traderToEdit.Assort = newAssorts;
     }
+
+    public void AddQuest(List<Quest> quests)
+    {
+        var questDb = databaseService.GetTables().Templates.Quests;
+        foreach (var quest in quests)
+        {
+            if (!questDb.TryAdd(quest.Id, quest))
+            {
+                logger.Warning($"Quest already exists in DB: {quest.Id}");
+            }
+        }
+    }
 }
