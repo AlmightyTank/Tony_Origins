@@ -18,7 +18,7 @@ public record ModMetadata : AbstractModMetadata
     public override string Name { get; init; } = "Priscilu_Origins_v2";
     public override string Author { get; init; } = "Reis | Update/Contributor: Anigx";
     public override List<string>? Contributors { get; init; } = ["Anigx"];
-    public override SemanticVersioning.Version Version { get; init; } = new("6.2.1");
+    public override SemanticVersioning.Version Version { get; init; } = new("6.2.2");
     public override SemanticVersioning.Range SptVersion { get; init; } = new("~4.0.11");
     public override List<string>? Incompatibilities { get; init; } = [];
     public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; } = null;
@@ -124,12 +124,20 @@ public class PrisciluOriginsMod(
             restockTimerSeconds,
             restockTimerSeconds);
 
-        // [FIX] Set nextResupply to current time + timer (fixes 0:0:0:0 timer bug)
-        traderBase.NextResupply = (int)(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + restockTimerSeconds);
-        PrisciluLogger.Log($"NextResupply set to: {traderBase.NextResupply} (in {restockTimerSeconds}s)");
-
         _ragfairConfig.Traders.TryAdd(traderBase.Id, true);
         addCustomTraderHelper.AddTraderToDb(traderBase, assort);
+
+        // [FIX] Set nextResupply on the DB reference AFTER registration (fixes 0:0:0:0 timer bug)
+        var registeredTrader = databaseServer.GetTables().Traders[traderBase.Id];
+        if (registeredTrader?.Base != null)
+        {
+            registeredTrader.Base.NextResupply = (int)(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + restockTimerSeconds);
+            PrisciluLogger.Log($"NextResupply set to: {registeredTrader.Base.NextResupply} (in {restockTimerSeconds}s)");
+        }
+        else
+        {
+            PrisciluLogger.Log("ERROR: Could not find registered trader to set NextResupply!");
+        }
 
         var localeFirstName = traderBase.Nickname ?? traderBase.Name ?? "Priscilu";
         var localeDescription = string.Empty;
