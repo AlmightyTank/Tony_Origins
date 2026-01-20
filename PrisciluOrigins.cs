@@ -8,6 +8,7 @@ using SPTarkov.Server.Core.Routers;
 using SPTarkov.Server.Core.Servers;
 using SPTarkov.Server.Core.Utils;
 using System.Reflection;
+using System.Linq;
 using Path = System.IO.Path;
 
 namespace PrisciluOrigins;
@@ -18,7 +19,7 @@ public record ModMetadata : AbstractModMetadata
     public override string Name { get; init; } = "Priscilu_Origins_v2";
     public override string Author { get; init; } = "Reis | Update/Contributor: Anigx";
     public override List<string>? Contributors { get; init; } = ["Anigx"];
-    public override SemanticVersioning.Version Version { get; init; } = new("6.2.2");
+    public override SemanticVersioning.Version Version { get; init; } = new("6.2.3");
     public override SemanticVersioning.Range SptVersion { get; init; } = new("~4.0.11");
     public override List<string>? Incompatibilities { get; init; } = [];
     public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; } = null;
@@ -27,7 +28,7 @@ public record ModMetadata : AbstractModMetadata
     public override string License { get; init; } = "MIT";
 }
 
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.TraderRegistration + 99)]
 public class PrisciluOriginsMod(
     ModHelper modHelper,
     ImageRouter imageRouter,
@@ -46,7 +47,7 @@ public class PrisciluOriginsMod(
         
         // [DEBUG LOG] Initialize Logger
         PrisciluLogger.Init(pathToMod);
-        PrisciluLogger.Log("Mod OnLoad started.");
+        PrisciluLogger.Log("Mod OnLoad started (Priority: TraderRegistration + 99).");
 
         var traderBase = modHelper.GetJsonDataFromFile<TraderBase>(pathToMod, "data/base.json");
         var assort = modHelper.GetJsonDataFromFile<TraderAssort>(pathToMod, "data/assort.json");
@@ -77,8 +78,28 @@ public class PrisciluOriginsMod(
         }
         else
         {
-            TraderUnlockService.EnableLevelLock = false;
+            TraderUnlockService.EnableLevelLock = false; // Ensure it's disabled if config says so
             PrisciluLogger.Log("Trader unlocked by default.");
+        }
+
+        // [FIX] Ensure ID consistency
+        if (string.IsNullOrEmpty(traderBase.Id))
+        {
+             PrisciluLogger.Log("CRITICAL ERROR: traderBase.Id is null or empty! Hardcoding ID to ensure stability.");
+             traderBase.Id = "6748adca5c70634464b214a8"; // Use ID from base.json
+        }
+
+        if (traderBase.ItemsBuy == null)
+        {
+           traderBase.ItemsBuy = new() { Category = [], IdList = [] };
+        }
+         if (traderBase.ItemsBuyProhibited == null)
+        {
+           traderBase.ItemsBuyProhibited = new() { Category = [], IdList = [] };
+        }
+         if (traderBase.ItemsSell == null)
+        {
+           traderBase.ItemsSell = [];
         }
 
         // [NEW] Apply Price Overrides
@@ -142,6 +163,20 @@ public class PrisciluOriginsMod(
         var localeFirstName = traderBase.Nickname ?? traderBase.Name ?? "Priscilu";
         var localeDescription = string.Empty;
         addCustomTraderHelper.AddTraderToLocales(traderBase, localeFirstName, localeDescription);
+
+        // [DEBUG] Final State Check
+        PrisciluLogger.Log("--- Final State Check ---");
+        var finalTrader = databaseServer.GetTables().Traders[traderBase.Id];
+        PrisciluLogger.Log($"DB Trader Exists: {finalTrader != null}");
+        PrisciluLogger.Log($"DB NextResupply: {finalTrader?.Base?.NextResupply}");
+        
+        var updateTimeEntry = _traderConfig.UpdateTime.FirstOrDefault(x => x.TraderId == traderBase.Id);
+        PrisciluLogger.Log($"Config UpdateTime Exists: {updateTimeEntry != null}");
+        if (updateTimeEntry != null)
+        {
+             PrisciluLogger.Log($"Config UpdateTime: Min={updateTimeEntry.Seconds.Min}, Max={updateTimeEntry.Seconds.Max}");
+        }
+        PrisciluLogger.Log("-------------------------");
 
         return Task.CompletedTask;
     }
