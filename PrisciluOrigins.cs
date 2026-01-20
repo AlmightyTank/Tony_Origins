@@ -102,6 +102,20 @@ public class PrisciluOriginsMod(
                    {
                         var scheme = assort.BarterScheme[item.Id][0][0];
                         scheme.Count = priceConfig.Price;
+
+                        // [NEW] Apply Currency
+                        var currencyTpl = priceConfig.Currency switch
+                        {
+                            "USD" => "5696686a4bdc2da3298b456a",
+                            "EUR" => "569668774bdc2da2298b4568",
+                            "RUB" => "5449016a4bdc2d6f028b456f",
+                            _ => null // Keep original if unknown/OTHER
+                        };
+
+                        if (currencyTpl != null)
+                        {
+                            scheme.Template = currencyTpl;
+                        }
                    }
                }
             }
