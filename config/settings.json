@@ -1,5 +1,5 @@
 {
-    "MinLevel": 1,
-    "UnlockedByDefault": true,
+    "MinLevel": 2,
+    "UnlockedByDefault": false,
     "RestockTimerSeconds": 3600
 }
