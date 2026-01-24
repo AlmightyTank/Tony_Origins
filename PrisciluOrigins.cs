@@ -7,6 +7,9 @@ using SPTarkov.Server.Core.Models.Spt.Mod;
 using SPTarkov.Server.Core.Routers;
 using SPTarkov.Server.Core.Servers;
 using SPTarkov.Server.Core.Utils;
+using System; // [FIX] Added System
+using System.Collections.Generic; // [FIX] Added Collections
+using System.Threading.Tasks; // [FIX] Added Tasks
 using System.Reflection;
 using System.Linq;
 using Path = System.IO.Path;
@@ -63,6 +66,19 @@ public class PrisciluOriginsMod(
         if (traderBase.LoyaltyLevels.Count > 0)
         {
             traderBase.LoyaltyLevels[0].MinLevel = config.Settings.MinLevel;
+        }
+
+        // [NEW] Apply Configurable Services
+        if (traderBase.Insurance != null)
+        {
+            // [TODO] InsurancePriceCoef seems to be missing in the new SDK or renamed.
+            // traderBase.Insurance.InsurancePriceCoef = config.Settings.InsurancePriceCoef;
+        }
+        
+        if (traderBase.Repair != null)
+        {
+            // Repair.Quality is double?, so we assign it directly without ToString()
+            traderBase.Repair.Quality = config.Settings.RepairQuality;
         }
 
         if (!config.Settings.UnlockedByDefault)
@@ -125,24 +141,111 @@ public class PrisciluOriginsMod(
         avatarRoute = avatarRoute.Replace(".png", "").Replace(".jpg", "").Replace(".jpeg", "");
         imageRouter.AddRoute(avatarRoute, traderImagePath);
 
-        // [TIMER] Hardcoded to 1 hour (3600s) as dynamic config caused issues
-        const int HardcodedRestockSeconds = 3600;
+        // [LOGIC] Flea Market Visibility
+        if (config.Settings.AddTraderToFleaMarket)
+        {
+            _ragfairConfig.Traders.TryAdd(traderBase.Id, true);
+        }
+        else
+        {
+             // Ensure it's removed if false (though usually default is hidden for custom traders unless added)
+             _ragfairConfig.Traders.Remove(traderBase.Id);
+        }
+
+        // [LOGIC] Stock Manipulation (Randomization & Unlimited)
+        if (config.Settings.RandomizeStockAvailable || config.Settings.UnlimitedStock)
+        {
+            var itemsToRemove = new List<string>();
+            var random = new Random();
+
+            foreach (var item in assort.Items)
+            {
+                 // Skip non-root items (attachments/children should stay if parent stays, technically)
+                 // However, simple randomization usually just hits the main offers (parentId = hideout)
+                 if (item.ParentId == "hideout")
+                 {
+                     // Randomize Availability
+                     if (config.Settings.RandomizeStockAvailable)
+                     {
+                         if (random.Next(0, 100) < config.Settings.OutOfStockChance)
+                         {
+                             // Mark for removal
+                             itemsToRemove.Add(item.Id);
+                             continue;
+                         }
+                     }
+
+                     // Unlimited Stock Override
+                     if (config.Settings.UnlimitedStock && item.Upd != null)
+                     {
+                         item.Upd.UnlimitedCount = true;
+                         item.Upd.StackObjectsCount = 999999;
+                         // Enhanced Logic: Clear purchase restrictions
+                         if (item.Upd.BuyRestrictionMax > 0) 
+                         {
+                            item.Upd.BuyRestrictionMax = 9999;
+                            item.Upd.BuyRestrictionCurrent = 0;
+                         }
+                     }
+                 }
+            }
+
+            // Perform Removals
+            if (itemsToRemove.Count > 0)
+            {
+                assort.Items.RemoveAll(x => itemsToRemove.Contains(x.Id) || itemsToRemove.Contains(x.ParentId)); 
+                // Also remove from barter_scheme and loyal_level_items
+                foreach (var id in itemsToRemove)
+                {
+                    assort.BarterScheme.Remove(id);
+                    assort.LoyalLevelItems.Remove(id);
+                }
+                PrisciluLogger.Log($"[Stock] Removed {itemsToRemove.Count} offers due to randomization.");
+            }
+        }
+
+        // [LOGIC] Price Multiplier
+        // We apply this ON TOP of existing prices or Config prices
+        if (Math.Abs(config.Settings.PriceMultiplier - 1.0) > 0.001)
+        {
+             foreach (var schemeList in assort.BarterScheme.Values)
+             {
+                 foreach (var schemeSubList in schemeList)
+                 {
+                     foreach (var component in schemeSubList)
+                     {
+                         if (component.Count.HasValue)
+                         {
+                             component.Count = (double)Math.Round(component.Count.Value * config.Settings.PriceMultiplier);
+                         }
+                     }
+                 }
+             }
+             PrisciluLogger.Log($"[Pricing] Applied Global Price Multiplier: {config.Settings.PriceMultiplier}");
+        }
+
+        // [TIMER] Configurable Refresh Time
+        // Use random between min/max or static
+        var timerRandom = new Random();
+        int restockTime = timerRandom.Next(config.Settings.TraderRefreshMin, config.Settings.TraderRefreshMax);
         
-        PrisciluLogger.Log($"Setting trader restock timer to {HardcodedRestockSeconds} seconds.");
+        PrisciluLogger.Log($"Setting trader restock timer to {restockTime} seconds.");
         addCustomTraderHelper.SetTraderUpdateTime(
             _traderConfig,
             traderBase,
-            HardcodedRestockSeconds,
-            HardcodedRestockSeconds);
+            restockTime,
+            restockTime);
 
-        // Ensure NextResupply is set to something valid
-        traderBase.NextResupply = (int)(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + HardcodedRestockSeconds);
+        // Ensure NextResupply is set
+        traderBase.NextResupply = (int)(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + restockTime);
 
-        _ragfairConfig.Traders.TryAdd(traderBase.Id, true);
         addCustomTraderHelper.AddTraderToDb(traderBase, assort);
         
         // Log verification
-        PrisciluLogger.Log($"Trader initialized with NextResupply: {traderBase.NextResupply}");
+        if (config.Settings.DebugLogging)
+        {
+             PrisciluLogger.Log($"Trader initialized. Debug Enabled.");
+        }
 
         var localeFirstName = traderBase.Nickname ?? traderBase.Name ?? "Priscilu";
         var localeDescription = string.Empty;

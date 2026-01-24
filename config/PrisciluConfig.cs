@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Reflection; // [NEW] For reflection
 using System.Text.Json;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
@@ -85,7 +87,13 @@ public class PrisciluConfig
             try
             {
                 var json = File.ReadAllText(_settingsPath);
-                Settings = JsonSerializer.Deserialize<SettingsConfig>(json) ?? new SettingsConfig();
+                var options = new JsonSerializerOptions 
+                { 
+                    ReadCommentHandling = JsonCommentHandling.Skip,
+                    AllowTrailingCommas = true,
+                    PropertyNameCaseInsensitive = true
+                };
+                Settings = JsonSerializer.Deserialize<SettingsConfig>(json, options) ?? new SettingsConfig();
             }
             catch (Exception ex)
             {
@@ -98,7 +106,19 @@ public class PrisciluConfig
             {
                 MinLevel = baseJson.LoyaltyLevels.FirstOrDefault()?.MinLevel ?? 1,
                 UnlockedByDefault = baseJson.UnlockedByDefault ?? false,
+                
+                TraderRefreshMin = 1800,
+                TraderRefreshMax = 3600,
+                AddTraderToFleaMarket = true,
+                InsurancePriceCoef = 25,
+                RepairQuality = 0.8,
 
+                RandomizeStockAvailable = true,
+                OutOfStockChance = 15,
+                UnlimitedStock = false,
+                PriceMultiplier = 1.0,
+
+                DebugLogging = false
             };
             SaveJson(_settingsPath, Settings);
         }
@@ -170,7 +190,20 @@ public class PrisciluConfig
 
     private void SaveJson<T>(string path, T data)
     {
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        File.WriteAllText(path, JsonSerializer.Serialize(data, options));
+        var options = new JsonSerializerOptions 
+        { 
+            WriteIndented = true,
+            ReadCommentHandling = JsonCommentHandling.Skip,
+            AllowTrailingCommas = true
+        };
+        try 
+        {
+            File.WriteAllText(path, JsonSerializer.Serialize(data, options));
+        }
+        catch (Exception ex)
+        {
+             // Fallback or logging if write fails
+             Console.WriteLine($"[Priscilu] Failed to save config: {ex.Message}");
+        }
     }
 }

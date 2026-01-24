@@ -7,8 +7,9 @@
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
     <Version>6.1.1</Version>
-    <OutputPath>bin\$(Configuration)\$(ProjectName)\$(AssemblyName)\</OutputPath>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DefaultItemExcludes>$(DefaultItemExcludes);dist\**</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SPTarkov.Common" Version="4.0.11" />
@@ -17,6 +18,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="data\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="config\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="package.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
