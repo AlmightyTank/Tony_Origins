@@ -44,7 +44,7 @@ jobs:
           $ErrorActionPreference = "Stop"
 
           $repo = "${{ github.workspace }}"
-          $outDir = Join-Path $repo "bin\Release\Priscilu_Origins"
+          $outDir = Join-Path $repo "bin\Release"
           if (!(Test-Path $outDir)) {
             throw "Build output not found: $outDir"
           }
@@ -54,10 +54,14 @@ jobs:
 
           New-Item -ItemType Directory -Force -Path $target | Out-Null
 
-          # Copy build output (dll, deps, Data) - Explicitly exclude PDBs etc.
+          # Copy build output (dll, deps, Data, Config, package.json)
           Copy-Item -Path (Join-Path $outDir "Priscilu_Origins.dll") -Destination $target -Force
-          Copy-Item -Path (Join-Path $outDir "Priscilu_Origins.deps.json") -Destination $target -Force
-          Copy-Item -Path (Join-Path $outDir "Data") -Destination $target -Recurse -Force
+          if (Test-Path (Join-Path $outDir "Priscilu_Origins.deps.json")) {
+            Copy-Item -Path (Join-Path $outDir "Priscilu_Origins.deps.json") -Destination $target -Force
+          }
+          Copy-Item -Path (Join-Path $outDir "data") -Destination $target -Recurse -Force
+          Copy-Item -Path (Join-Path $outDir "config") -Destination $target -Recurse -Force
+          Copy-Item -Path (Join-Path $outDir "package.json") -Destination $target -Force
 
           # Create zip
           $zipName = "Priscilu_Origins_v2-${{ github.ref_name }}.zip"
