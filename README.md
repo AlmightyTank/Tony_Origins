@@ -69,5 +69,5 @@ note for later
 And a special thank you to Reis for the foundational work.
 
 ## Version
-- Mod: 6.3.2
+- Mod: 6.4.0
 - Targets: SPT ~4.0.11
