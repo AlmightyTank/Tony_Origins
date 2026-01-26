@@ -1,0 +1,11 @@
+{
+    "name": "Priscilu_Origins_v2",
+    "version": "6.1.1",
+    "author": "Reis | Update/Contributor: Anigx",
+    "license": "MIT",
+    "main": "Priscilu_Origins.dll",
+    "isBundleMod": false,
+    "loadBefore": [],
+    "loadAfter": [],
+    "sptVersion": "~4.0.11"
+}
