@@ -14,16 +14,17 @@ using System.Reflection;
 using System.Linq;
 using System.Collections; // Added for IDictionary support
 using Path = System.IO.Path;
+using Tony.config;
 
-namespace PrisciluOrigins;
+namespace Tony;
 
 public record ModMetadata : AbstractModMetadata
 {
-    public override string ModGuid { get; init; } = "com.priscilu.origins";
-    public override string Name { get; init; } = "Priscilu_Origins_v2";
-    public override string Author { get; init; } = "Reis | Update/Contributor: Anigx";
-    public override List<string>? Contributors { get; init; } = ["Anigx"];
-    public override SemanticVersioning.Version Version { get; init; } = new("6.4.0");
+    public override string ModGuid { get; init; } = "com.amightytank.yetanothertradermod";
+    public override string Name { get; init; } = "YetAnotherTraderMod";
+    public override string Author { get; init; } = "AMightyTank | Based on PrisciluOrigins by Reis/Anigx";
+    public override List<string>? Contributors { get; init; } = ["Reis", "Anigx"];
+    public override SemanticVersioning.Version Version { get; init; } = new("0.0.1");
     public override SemanticVersioning.Range SptVersion { get; init; } = new("~4.0.11");
     public override List<string>? Incompatibilities { get; init; } = [];
     public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; } = null;
@@ -33,7 +34,7 @@ public record ModMetadata : AbstractModMetadata
 }
 
 [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
-public class PrisciluOriginsMod(
+public class TonyMod(
     ModHelper modHelper,
     ImageRouter imageRouter,
     ConfigServer configServer,
@@ -50,27 +51,27 @@ public class PrisciluOriginsMod(
         var pathToMod = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
         
         // [DEBUG LOG] Initialize Logger
-        PrisciluLogger.Init(pathToMod);
-        PrisciluLogger.Log("Mod OnLoad started.");
+        TonyLogger.Init(pathToMod);
+        TonyLogger.Log("Mod OnLoad started.");
 
         var traderBase = modHelper.GetJsonDataFromFile<TraderBase>(pathToMod, "data/base.json");
         var assort = modHelper.GetJsonDataFromFile<TraderAssort>(pathToMod, "data/assort.json");
-        var traderImagePath = Path.Combine(pathToMod, "data/Priscilu_Origins.jpg");
+        var traderImagePath = Path.Combine(pathToMod, "data/Tony.jpg");
 
         // [NEW] Load Configuration
-        var config = new PrisciluOrigins.Config.PrisciluConfig(pathToMod, databaseServer);
+        var config = new TonyConfig(pathToMod, databaseServer);
         config.LoadOrGenerate(traderBase, assort);
 
         // [LOG] Set Debug Flag
-        PrisciluLogger.IsDebugEnabled = config.Settings.DebugLogging;
-        if (PrisciluLogger.IsDebugEnabled)
+        TonyLogger.IsDebugEnabled = config.Settings.DebugLogging;
+        if (TonyLogger.IsDebugEnabled)
         {
-             PrisciluLogger.LogDebug($"Debug Mode Enabled. Config Loaded.");
-             PrisciluLogger.LogDebug($"  MinLevel: {config.Settings.MinLevel}");
-             PrisciluLogger.LogDebug($"  UnlockedByDefault: {config.Settings.UnlockedByDefault}");
-             PrisciluLogger.LogDebug($"  UnlimitedStock: {config.Settings.UnlimitedStock}");
-             PrisciluLogger.LogDebug($"  RandomizeStock: {config.Settings.RandomizeStockAvailable} (Chance: {config.Settings.OutOfStockChance}%)");
-             PrisciluLogger.LogDebug($"  PriceMultiplier: {config.Settings.PriceMultiplier}");
+             TonyLogger.LogDebug($"Debug Mode Enabled. Config Loaded.");
+             TonyLogger.LogDebug($"  MinLevel: {config.Settings.MinLevel}");
+             TonyLogger.LogDebug($"  UnlockedByDefault: {config.Settings.UnlockedByDefault}");
+             TonyLogger.LogDebug($"  UnlimitedStock: {config.Settings.UnlimitedStock}");
+             TonyLogger.LogDebug($"  RandomizeStock: {config.Settings.RandomizeStockAvailable} (Chance: {config.Settings.OutOfStockChance}%)");
+             TonyLogger.LogDebug($"  PriceMultiplier: {config.Settings.PriceMultiplier}");
         }
 
         // [NEW] Apply Settings (Level & Unlock)
@@ -97,18 +98,18 @@ public class PrisciluOriginsMod(
                         var targetType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
                         object val = Convert.ChangeType(config.Settings.InsurancePriceCoef, targetType);
                         prop.SetValue(level, val);
-                        PrisciluLogger.LogDebug($"[Insurance] Set Level {level.MinLevel} Coef to: {val}");
+                        TonyLogger.LogDebug($"[Insurance] Set Level {level.MinLevel} Coef to: {val}");
                     }
                     else
                     {
                          // Fallback to ExtensionData if property missing?
                          // But Inspector confirmed property exists.
-                         PrisciluLogger.LogDebug($"[Insurance] Warning: InsurancePriceCoefficient property not found on LoyaltyLevel.");
+                         TonyLogger.LogDebug($"[Insurance] Warning: InsurancePriceCoefficient property not found on LoyaltyLevel.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    PrisciluLogger.Log($"[Insurance] Error settingcoef for level: {ex.Message}");
+                    TonyLogger.Log($"[Insurance] Error settingcoef for level: {ex.Message}");
                 }
             }
         }
@@ -132,20 +133,20 @@ public class PrisciluOriginsMod(
             TraderUnlockService.EnableLevelLock = true;
             TraderUnlockService.MinLevelRequired = config.Settings.MinLevel;
             traderUnlockService.OnLoad();
-            PrisciluLogger.Log($"Level-based unlock enabled. Required level: {config.Settings.MinLevel}");
+            TonyLogger.Log($"Level-based unlock enabled. Required level: {config.Settings.MinLevel}");
         }
         else
         {
             TraderUnlockService.EnableLevelLock = false;
             TraderUnlockService.ForceUnlock = true; // [FIX] Force unlock for existing profiles
-            PrisciluLogger.Log("Trader unlocked by default (ForceUnlock active).");
+            TonyLogger.Log("Trader unlocked by default (ForceUnlock active).");
         }
 
         // [FIX] Ensure ID consistency
         if (string.IsNullOrEmpty(traderBase.Id))
         {
-             PrisciluLogger.Log("CRITICAL ERROR: traderBase.Id is null or empty! Hardcoding ID to ensure stability.");
-             traderBase.Id = "6748adca5c70634464b214a8"; 
+             TonyLogger.Log("CRITICAL ERROR: traderBase.Id is null or empty! Hardcoding ID to ensure stability.");
+             traderBase.Id = "66a0f6b2c4d8e90123456789"; 
         }
 
         // Ensure non-null collections
@@ -158,7 +159,7 @@ public class PrisciluOriginsMod(
         {
             foreach (var item in assort.Items)
             {
-               var tpl = PrisciluOrigins.Config.PrisciluConfig.GetTemplateId(item);
+               var tpl = TonyConfig.GetTemplateId(item);
                if (!string.IsNullOrEmpty(tpl) && tpl == priceConfig.TplId && item.ParentId == "hideout")
                {
                    if (assort.BarterScheme.ContainsKey(item.Id))
@@ -201,7 +202,7 @@ public class PrisciluOriginsMod(
         // [LOGIC] Stock Manipulation (Randomization & Unlimited)
         if (config.Settings.RandomizeStockAvailable || config.Settings.UnlimitedStock)
         {
-            PrisciluLogger.LogDebug("Starting Stock Manipulation...");
+            TonyLogger.LogDebug("Starting Stock Manipulation...");
             var itemsToRemove = new List<string>();
             var itemsToRemoveNames = new List<string>(); // [NEW] Track names
             var random = new Random();
@@ -224,14 +225,14 @@ public class PrisciluOriginsMod(
                              
                              // [NEW] Resolve Name
                              string itemName = item.Id;
-                             var tpl = PrisciluOrigins.Config.PrisciluConfig.GetTemplateId(item);
+                             var tpl = TonyConfig.GetTemplateId(item);
                              if (!string.IsNullOrEmpty(tpl) && locales.Value != null && locales.Value.TryGetValue($"{tpl} Name", out var nameVal))
                              {
                                  itemName = nameVal.ToString();
                              }
                              itemsToRemoveNames.Add($"{itemName} ({item.Id})");
 
-                             PrisciluLogger.LogDebug($"[Random Stock] removing: {itemName} ({item.Id})");
+                             TonyLogger.LogDebug($"[Random Stock] removing: {itemName} ({item.Id})");
                              continue;
                          }
                      }
@@ -260,7 +261,7 @@ public class PrisciluOriginsMod(
                  }
             }
 
-            PrisciluLogger.LogDebug($"Total items modified for Stock setting: {modifiedCount}");
+            TonyLogger.LogDebug($"Total items modified for Stock setting: {modifiedCount}");
 
             // Perform Removals
             if (itemsToRemove.Count > 0)
@@ -271,19 +272,19 @@ public class PrisciluOriginsMod(
                     assort.BarterScheme.Remove(id);
                     assort.LoyalLevelItems.Remove(id);
                 }
-                PrisciluLogger.Log($"[Stock] Removed {itemsToRemove.Count} offers due to randomization.");
-                PrisciluLogger.LogDebug($"Removed Items:\n  {string.Join("\n  ", itemsToRemoveNames)}");
+                TonyLogger.Log($"[Stock] Removed {itemsToRemove.Count} offers due to randomization.");
+                TonyLogger.LogDebug($"Removed Items:\n  {string.Join("\n  ", itemsToRemoveNames)}");
             }
             else 
             {
-                 PrisciluLogger.LogDebug("No items removed by randomization this turn.");
+                 TonyLogger.LogDebug("No items removed by randomization this turn.");
             }
         }
 
         // [LOGIC] Price Multiplier
         if (Math.Abs(config.Settings.PriceMultiplier - 1.0) > 0.001)
         {
-             PrisciluLogger.LogDebug($"Applying Price Multiplier {config.Settings.PriceMultiplier}...");
+             TonyLogger.LogDebug($"Applying Price Multiplier {config.Settings.PriceMultiplier}...");
              int changedCount = 0;
              
              // [NEW] Dictionary for quick item lookup to resolve names
@@ -309,27 +310,27 @@ public class PrisciluOriginsMod(
                              string itemName = itemId;
                              if (itemMap.TryGetValue(itemId, out var item))
                              {
-                                 var tpl = PrisciluOrigins.Config.PrisciluConfig.GetTemplateId(item);
+                                 var tpl = TonyConfig.GetTemplateId(item);
                                  if (!string.IsNullOrEmpty(tpl) && localesForPrice.Value != null && localesForPrice.Value.TryGetValue($"{tpl} Name", out var nameVal))
                                  {
                                      itemName = nameVal.ToString();
                                  }
                              }
 
-                             PrisciluLogger.LogDebug($"  Price adjust: {oldPrice} -> {component.Count} | {itemName} ({itemId})");
+                             TonyLogger.LogDebug($"  Price adjust: {oldPrice} -> {component.Count} | {itemName} ({itemId})");
                              changedCount++;
                          }
                      }
                  }
              }
-             PrisciluLogger.Log($"[Pricing] Applied Global Price Multiplier: {config.Settings.PriceMultiplier} to {changedCount} items.");
+             TonyLogger.Log($"[Pricing] Applied Global Price Multiplier: {config.Settings.PriceMultiplier} to {changedCount} items.");
         }
 
         // [TIMER] Configurable Refresh Time
         var timerRandom = new Random();
         int restockTime = timerRandom.Next(config.Settings.TraderRefreshMin, config.Settings.TraderRefreshMax);
         
-        PrisciluLogger.Log($"Setting trader restock timer to {restockTime} seconds.");
+        TonyLogger.Log($"Setting trader restock timer to {restockTime} seconds.");
         addCustomTraderHelper.SetTraderUpdateTime(
             _traderConfig,
             traderBase,
@@ -342,11 +343,11 @@ public class PrisciluOriginsMod(
         
         if (config.Settings.DebugLogging)
         {
-             PrisciluLogger.Log($"Trader initialized. Debug Enabled.");
+             TonyLogger.Log($"Trader initialized. Debug Enabled.");
         }
 
-        var localeFirstName = traderBase.Nickname ?? traderBase.Name ?? "Priscilu";
-        var localeDescription = string.Empty;
+        var localeFirstName = traderBase.Nickname ?? traderBase.Name ?? "Tony";
+        var localeDescription = "An ex-BEAR operator and former enforcer for Russian organized crime. After Tarkov collapsed, Volkov turned old connections into a quiet business, supplying weapons, armor, and contraband to smugglers, mercenaries, and criminals. He respects usefulness, hates weakness, and only opens doors for those who earn his trust.";
         addCustomTraderHelper.AddTraderToLocales(traderBase, localeFirstName, localeDescription);
 
         return Task.CompletedTask;

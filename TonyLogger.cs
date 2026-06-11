@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 
-namespace PrisciluOrigins;
+namespace Tony;
 
-public static class PrisciluLogger
+public static class TonyLogger
 {
     private static string? _logPath;
     private static bool _initialized = false;
@@ -17,12 +17,12 @@ public static class PrisciluLogger
         try 
         {
             // Overwrite existing file (Create)
-            File.WriteAllText(_logPath, $"[PrisciluOrigins] Debug Log Started at {DateTime.Now:yyyy-MM-dd HH:mm:ss}\n------------------------------------------------\n");
+            File.WriteAllText(_logPath, $"[Tony] Debug Log Started at {DateTime.Now:yyyy-MM-dd HH:mm:ss}\n------------------------------------------------\n");
             _initialized = true;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[PrisciluOrigins] Failed to initialize log file: {ex.Message}");
+            Console.WriteLine($"[Tony] Failed to initialize log file: {ex.Message}");
         }
     }
 
@@ -51,7 +51,7 @@ public static class PrisciluLogger
             var formatted = $"[DEBUG] [{DateTime.Now:HH:mm:ss}] {message}";
             File.AppendAllText(_logPath, formatted + "\n");
             // Also print to server console for immediate visibility if debug is ON
-            Console.WriteLine($"[Priscilu-DEBUG] {message}");
+            Console.WriteLine($"[Tony-DEBUG] {message}");
         }
         catch { }
     }

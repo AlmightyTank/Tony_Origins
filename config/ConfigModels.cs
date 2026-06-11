@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace PrisciluOrigins.Config;
+namespace Tony.Config;
 
 public class SettingsConfig
 {

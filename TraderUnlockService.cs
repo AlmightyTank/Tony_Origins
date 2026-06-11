@@ -5,7 +5,7 @@ using SPTarkov.Server.Core.Servers;
 using System;
 using System.Threading.Tasks;
 
-namespace PrisciluOrigins;
+namespace Tony;
 
 /// <summary>
 /// Service to check and unlock trader based on player level.
@@ -18,7 +18,7 @@ public class TraderUnlockService : IOnLoad, IDisposable
     private readonly SaveServer _saveServer;
     private System.Threading.Timer? _timer;
     
-    private const string PrisciluTraderId = "6748adca5c70634464b214a8";
+    private const string TonyTraderId = "66a0f6b2c4d8e90123456789";
     
     // Static config set by main mod
     public static int MinLevelRequired { get; set; } = 1;
@@ -37,7 +37,7 @@ public class TraderUnlockService : IOnLoad, IDisposable
     {
         if (EnableLevelLock)
         {
-            PrisciluLogger.Log($"Unlock Service Active. Required Level: {MinLevelRequired}");
+            TonyLogger.Log($"Unlock Service Active. Required Level: {MinLevelRequired}");
             // Initial check
             CheckAllProfiles();
             
@@ -50,7 +50,7 @@ public class TraderUnlockService : IOnLoad, IDisposable
         }
         else if (ForceUnlock)
         {
-             PrisciluLogger.Log("Forcing Unlock for all profiles (UnlockedByDefault).");
+             TonyLogger.Log("Forcing Unlock for all profiles (UnlockedByDefault).");
              CheckAllProfiles();
         }
 
@@ -73,7 +73,7 @@ public class TraderUnlockService : IOnLoad, IDisposable
         {
             var profiles = _saveServer.GetProfiles();
             // Optional: Log every check tick? That's spammy. Maybe only if profiles found.
-            // PrisciluLogger.Log($"Checking {profiles.Count} profiles...");
+            // TonyLogger.Log($"Checking {profiles.Count} profiles...");
             
             foreach (var (sessionId, profile) in profiles)
             {
@@ -82,7 +82,7 @@ public class TraderUnlockService : IOnLoad, IDisposable
         }
         catch (Exception ex)
         {
-            PrisciluLogger.Log($"Error checking profiles: {ex.Message}");
+            TonyLogger.Log($"Error checking profiles: {ex.Message}");
         }
     }
     
@@ -116,7 +116,7 @@ public class TraderUnlockService : IOnLoad, IDisposable
                              ?? GetMemberValue(profile, "CharacterData");
             if (characters == null) 
             {
-                PrisciluLogger.Log($"Session {sessionId}: CharacterData missing.");
+                TonyLogger.Log($"Session {sessionId}: CharacterData missing.");
                 return;
             }
             
@@ -126,7 +126,7 @@ public class TraderUnlockService : IOnLoad, IDisposable
             
             if (pmcProfile == null) 
             {
-                 PrisciluLogger.Log($"Session {sessionId}: PmcData missing.");
+                 TonyLogger.Log($"Session {sessionId}: PmcData missing.");
                  return;
             }
             
@@ -145,7 +145,7 @@ public class TraderUnlockService : IOnLoad, IDisposable
                 object? targetKey = null;
                 foreach (var key in tradersDict.Keys)
                 {
-                    if (key.ToString() == PrisciluTraderId)
+                    if (key.ToString() == TonyTraderId)
                     {
                         targetKey = key;
                         break;
@@ -169,8 +169,8 @@ public class TraderUnlockService : IOnLoad, IDisposable
                         {
                             SetUnlocked(traderInfo, true);
                             var msg = $"LIVE UNLOCK: Session {sessionId} reached Level {playerLevel}. UNLOCKED!";
-                            _logger.Info($"[PrisciluOrigins] {msg}"); // Keep console for critical event
-                            PrisciluLogger.Log(msg);
+                            _logger.Info($"[Tony] {msg}"); // Keep console for critical event
+                            TonyLogger.Log(msg);
                         }
                     }
                 }
@@ -178,13 +178,13 @@ public class TraderUnlockService : IOnLoad, IDisposable
                 {
                      // Only log warning once? Or every time?
                      // Start spamming file is better than silent failure for debug mode.
-                     // PrisciluLogger.Log($"WARNING: Trader {PrisciluTraderId} missing in TradersInfo dict for {sessionId}.");
+                     // TonyLogger.Log($"WARNING: Trader {TonyTraderId} missing in TradersInfo dict for {sessionId}.");
                 }
             }
         }
         catch (Exception ex)
         {
-            PrisciluLogger.Log($"EXCEPTION in Unlock: {ex.Message}");
+            TonyLogger.Log($"EXCEPTION in Unlock: {ex.Message}");
         }
     }
 

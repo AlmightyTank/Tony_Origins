@@ -6,11 +6,13 @@ using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Servers;
 using System.Linq;
-using Path = System.IO.Path; // [FIX] Ambiguity
+using Path = System.IO.Path;
+using Tony;
+using Tony.Config;
 
-namespace PrisciluOrigins.Config;
+namespace Tony.config;
 
-public class PrisciluConfig
+public class TonyConfig
 {
     private readonly string _modPath;
     private readonly string _configDir;
@@ -22,7 +24,7 @@ public class PrisciluConfig
     public SettingsConfig Settings { get; private set; } = new();
     public List<PriceConfigItem> Prices { get; private set; } = new();
 
-    public PrisciluConfig(string modPath, DatabaseServer databaseServer)
+    public TonyConfig(string modPath, DatabaseServer databaseServer)
     {
         _modPath = modPath;
         _databaseServer = databaseServer;
@@ -56,15 +58,15 @@ public class PrisciluConfig
 
             // Fallback: If absolutely nothing matches, try getting ANY property that has the value matching ID for simple checks, or dump properties (debug)
             // Debug Log (Consoles only visible in server window)
-            // Console.WriteLine($"[Priscilu] COULD NOT FIND TEMPLATE ID FOR ITEM TYPE: {type.FullName}");
-            // Console.WriteLine($"[Priscilu] Available Properties: {string.Join(", ", type.GetProperties().Select(p => p.Name))}");
-            // Console.WriteLine($"[Priscilu] Available Fields: {string.Join(", ", type.GetFields().Select(f => f.Name))}");
+            // Console.WriteLine($"[Tony] COULD NOT FIND TEMPLATE ID FOR ITEM TYPE: {type.FullName}");
+            // Console.WriteLine($"[Tony] Available Properties: {string.Join(", ", type.GetProperties().Select(p => p.Name))}");
+            // Console.WriteLine($"[Tony] Available Fields: {string.Join(", ", type.GetFields().Select(f => f.Name))}");
 
             return ((dynamic)item).Id; 
         }
         catch (Exception ex)
         {
-             // Console.WriteLine($"[Priscilu] Error getting template id: {ex.Message}");
+             // Console.WriteLine($"[Tony] Error getting template id: {ex.Message}");
              return null;
         }
     }
@@ -97,7 +99,7 @@ public class PrisciluConfig
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[Priscilu] Error loading settings.json: {ex.Message}");
+                Console.WriteLine($"[Tony] Error loading settings.json: {ex.Message}");
             }
         }
         else
@@ -132,17 +134,17 @@ public class PrisciluConfig
             {
                 var json = File.ReadAllText(_pricesPath);
                 Prices = JsonSerializer.Deserialize<List<PriceConfigItem>>(json) ?? new List<PriceConfigItem>();
-                PrisciluLogger.LogDebug($"Loaded {Prices.Count} custom price entries from items.json");
+                TonyLogger.LogDebug($"Loaded {Prices.Count} custom price entries from items.json");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[Priscilu] Error loading items.json: {ex.Message}");
-                PrisciluLogger.Log($"Error loading items.json: {ex.Message}");
+                Console.WriteLine($"[Tony] Error loading items.json: {ex.Message}");
+                TonyLogger.Log($"Error loading items.json: {ex.Message}");
             }
         }
         else
         {
-            PrisciluLogger.LogDebug("items.json not found. Generating default prices from assort...");
+            TonyLogger.LogDebug("items.json not found. Generating default prices from assort...");
             Prices = new List<PriceConfigItem>();
             // [FIX] Locale handling re-enabled for "en"
             var locales = _databaseServer.GetTables().Locales.Global["en"]; 
@@ -190,7 +192,7 @@ public class PrisciluConfig
             Prices = Prices.OrderBy(x => x.ItemName).ToList();
 
             SaveJson(_pricesPath, Prices);
-            PrisciluLogger.Log($"Generated items.json with {generatedCount} entries.");
+            TonyLogger.Log($"Generated items.json with {generatedCount} entries.");
         }
     }
 
@@ -209,7 +211,7 @@ public class PrisciluConfig
         catch (Exception ex)
         {
              // Fallback or logging if write fails
-             Console.WriteLine($"[Priscilu] Failed to save config: {ex.Message}");
+             Console.WriteLine($"[Tony] Failed to save config: {ex.Message}");
         }
     }
 }

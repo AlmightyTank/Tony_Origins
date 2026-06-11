@@ -1,24 +1,17 @@
-# Release Notes - v6.4.0
+# Release Notes - Tony v1.0.0
 
-## 🚀 Changes
+## Changes
+- Rebranded trader from Priscilu Origins to Tony.
+- Updated trader name, surname, nickname, location, and avatar route in `data/base.json`.
+- Renamed avatar file to `data/Tony.jpg`.
+- Updated package metadata to use `Tony.dll`.
+- Updated C# namespace, main mod class, logger class, config class, project root namespace, and assembly name to Tony.
+- Updated config comments and documentation references.
 
-### Configuration Update
-- **New Default Settings**: Updated the bundled configuration to match recommended defaults.
-  - `MinLevel`: 5
-  - `TraderRefreshMin`: 1800 (30 min)
-  - `TraderRefreshMax`: 3600 (60 min)
-  - `DebugLogging`: false
-  - `UnlimitedStock`: true
+## Not changed yet
+- Assort content is still the existing imported stock list.
+- Assigned new Tony trader ID: `66a0f6b2c4d8e90123456789`.
+- Four loyalty levels and questline/betrayal logic are not implemented in this pass.
 
-### Improvements (Cumulative from v6.3.x)
-- **Code Optimization**: Removed unused development tools (`Inspector`).
-- **Build Cleanup**: Release artifacts no longer contain unnecessary `.pdb`, `.deps.json`, or `.cs` source files.
-- **Trader Logic**: Improved stock management and "Live" unlock logic.
-
-## 📦 Installation
-1. Download the release.
-2. Copy the `Priscilu_Origins_v2` folder into your `<SPT-Server>/user/mods/` directory.
-3. Start the server.
-
----
-*Targeting SPT 4.0.11+*
+## Target
+- SPT ~4.0.11

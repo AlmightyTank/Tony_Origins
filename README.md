@@ -1,73 +1,63 @@
-﻿# Priscilu_Origins (v2)
+# Tony Trader
 
 Server-side trader mod for SPT 4.0.11.
 
 ## Overview
-Priscilu_Origins adds a custom trader with a large assortment and custom avatar. This repository contains the C# source code used to build the server mod for SPT 4.x.
+Tony adds a custom trader based on the existing Priscilu Origins trader framework, rebranded as Tony: an ex-BEAR operator with Russian underworld connections.
+
+This pass renames/rebrands the trader identity, DLL/project metadata, avatar route, source namespaces, logger text, and install/package naming.
+
+## Current trader identity
+- Name: Tony
+- Surname: Volkov
+- Nickname: Tony
+- Location: A back room somewhere under Tarkov.
+- Avatar: `data/Tony.jpg`
+- Trader ID: `66a0f6b2c4d8e90123456789`
+
+The trader ID was intentionally kept the same for now so existing assort/profile references do not break during the rebrand pass.
 
 ## Requirements
-- SPT 4.0.11 (server)
-- .NET 9 SDK (for building)
-- Windows (recommended; matches SPT server environment)
+- SPT 4.0.11 server
+- .NET 9 SDK for building
+- Windows recommended
 
-## Build (Release)
-1) Open a terminal in the repo folder.
-2) Build the mod:
-
+## Build
 ```powershell
-# from repo root
-
 dotnet build -c Release
 ```
 
 The build output will be placed in:
 
-```
-bin\Release\Priscilu_Origins\
+```text
+bin\Release\
 ```
 
 ## Install
-1) Close the SPT server.
-2) Copy the build output folder into your SPT user mods folder:
+1. Close the SPT server.
+2. Build the project.
+3. Copy the build output folder into:
 
-```
-<SPT>\user\mods\Priscilu_Origins
-```
-
-After copy, the folder should contain:
-
-- Priscilu_Origins.dll
-- Priscilu_Origins.deps.json
-- Data\base.json
-- Data\assort.json
-- Data\Priscilu_Origins.jpg
-
-3) Start the SPT server.
-
-## Packaged layout (Priscilu_Origins_v2)
-The release ZIP uses the full SPT path so you can extract it directly into your game root:
-
-```
-SPT\user\mods\Priscilu_Origins_v2\
+```text
+<SPT>\user\mods\Tony
 ```
 
-Contents are the same as the normal install, just nested under the full SPT path.
+The installed folder should contain:
 
-## Troubleshooting
-- If the server logs show missing soft armor inserts, ensure the assort.json uses the exact slot names from the SPT item templates (case-sensitive):
-  - Soft_armor_front
-  - Soft_armor_back
-  - Soft_armor_left
-  - soft_armor_right
-note for later
+```text
+Tony.dll
+package.json
+data\base.json
+data\assort.json
+data\Tony.jpg
+config\settings.json
+config\items.json
+```
+
+## Notes
+This is only the rename/rebrand pass. Quest unlocks, four loyalty levels, betrayal branches, and loyalty-gated assort splitting should be added in the next passes.
 
 ## Credits
-- Original author: Reis
-- Update/Maintenance: CyberByteCraft
-
-## Special Thanks
-And a special thank you to Reis for the foundational work.
-
-## Version
-- Mod: 6.4.0
-- Targets: SPT ~4.0.11
+- Original Priscilu Origins foundation: Reis
+- Update/contributor foundation: Anigx
+- Tony concept/rebrand: Christopher Young

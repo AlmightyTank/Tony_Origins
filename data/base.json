@@ -1,5 +1,5 @@
 {
-    "_id": "6748adca5c70634464b214a8",
+    "_id": "66a0f6b2c4d8e90123456789",
     "working": true,
     "availableInRaid": false,
     "items_buy": {
@@ -56,11 +56,12 @@
         "id_list": []
     },
     "customization_seller": false,
-    "name": "Priscilu Origins",
-    "surname": "Flash",
-    "nickname": "Priscilu Origins",
-    "location": "In some tree in Brazilian Amazon.",
-    "avatar": "/files/trader/avatar/Priscilu_Origins.jpg",
+    "name": "Tony",
+    "surname": "Volkov",
+    "nickname": "Tony",
+    "location": "A locked service room beneath Streets of Tarkov.",
+    "description": "An ex-BEAR operator and former enforcer for Russian organized crime. Volkov survived the collapse of Tarkov by turning old connections into a new business, supplying weapons, armor, and contraband to those who can afford his prices or earn his trust. Quiet, careful, and dangerous, Tony operates from a hidden back room beneath the city, dealing with smugglers, mercenaries, and criminals alike. He has little patience for weakness, but those who prove useful may find doors opened that should have stayed locked.",
+    "avatar": "/files/trader/avatar/Tony.jpg",
     "balance_rub": 5000000,
     "balance_dol": 0,
     "balance_eur": 0,
@@ -94,12 +95,42 @@
     "gridHeight": 150,
     "loyaltyLevels": [
         {
-            "minLevel": 1,
+            "minLevel": 5,
             "minSalesSum": 0,
             "minStanding": 0,
-            "buy_price_coef": 50,
+            "buy_price_coef": 63,
             "repair_price_coef": 150,
-            "insurance_price_coef": 10,
+            "insurance_price_coef": 50,
+            "exchange_price_coef": 0,
+            "heal_price_coef": 0
+        },
+        {
+            "minLevel": 15,
+            "minSalesSum": 750000,
+            "minStanding": 0.2,
+            "buy_price_coef": 58,
+            "repair_price_coef": 135,
+            "insurance_price_coef": 45,
+            "exchange_price_coef": 0,
+            "heal_price_coef": 0
+        },
+        {
+            "minLevel": 28,
+            "minSalesSum": 2500000,
+            "minStanding": 0.45,
+            "buy_price_coef": 53,
+            "repair_price_coef": 120,
+            "insurance_price_coef": 40,
+            "exchange_price_coef": 0,
+            "heal_price_coef": 0
+        },
+        {
+            "minLevel": 40,
+            "minSalesSum": 6000000,
+            "minStanding": 0.75,
+            "buy_price_coef": 48,
+            "repair_price_coef": 105,
+            "insurance_price_coef": 35,
             "exchange_price_coef": 0,
             "heal_price_coef": 0
         }
