@@ -54,9 +54,9 @@ public class TonyMod(
         TonyLogger.Init(pathToMod);
         TonyLogger.Log("Mod OnLoad started.");
 
-        var traderBase = modHelper.GetJsonDataFromFile<TraderBase>(pathToMod, "data/base.json");
-        var assort = modHelper.GetJsonDataFromFile<TraderAssort>(pathToMod, "data/assort.json");
-        var traderImagePath = Path.Combine(pathToMod, "data/Tony.jpg");
+        var traderBase = modHelper.GetJsonDataFromFile<TraderBase>(pathToMod, "db/CustomTrader/Tony/base.json");
+        var assort = modHelper.GetJsonDataFromFile<TraderAssort>(pathToMod, "db/CustomTrader/Tony/assort.json");
+        var traderImagePath = Path.Combine(pathToMod, "db/CustomTrader/Tony/Tony.jpg");
 
         var config = new TonyConfig(pathToMod, databaseServer);
         config.LoadOrGenerate(traderBase, assort);

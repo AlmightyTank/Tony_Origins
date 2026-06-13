@@ -1,0 +1,25 @@
+{
+    "685000000000000000000201": {
+        "itemTplToClone": "590c645c86f77412b01304d9",
+        "parentId": "5448ecbe4bdc2d60728b4568",
+        "handbookParentId": "5b47574386f77428ca22b341",
+        "overrideProperties": {
+            "ExaminedByDefault": true,
+            "Width": 1,
+            "Height": 2,
+            "Weight": 0.2,
+            "StackMaxSize": 1,
+            "DiscardingBlock": true,
+            "CanSellOnRagfair": false
+        },
+        "locales": {
+            "en": {
+                "name": "Volkov's Concordia ledger",
+                "shortName": "Ledger",
+                "description": "An old security ledger from Concordia. It contains names, room numbers, camera notes, payoff records, and routes connected to Tony Volkov's people."
+            }
+        },
+        "fleaPriceRoubles": 1,
+        "addtoItemBlacklist": true
+    }
+}

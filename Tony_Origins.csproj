@@ -23,25 +23,31 @@
 	  <PackageReference Include="WTT-ServerCommonLib" Version="2.0.20" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\**">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="config\**" Exclude="config\**\*.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Remove="db\CustomItems\tony_quest_items.json" />
+    <Content Remove="db\CustomQuests\66a0f6b2c4d8e90123456789\locales\en.json" />
+    <Content Remove="db\CustomQuests\66a0f6b2c4d8e90123456789\quests\back_room_etiquette.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="db\CustomItems\tony_quest_items.json" />
+    <None Include="db\CustomQuests\579dc571d53a0658a154fbec\Locales\en.json" />
+    <None Include="db\CustomQuests\579dc571d53a0658a154fbec\QuestAssort\assort.json" />
+    <None Include="db\CustomQuests\579dc571d53a0658a154fbec\Quests\a_friend_of_a_friend.json" />
+    <None Include="db\CustomQuests\66a0f6b2c4d8e90123456789\Locales\en.json" />
+    <None Include="db\CustomQuests\66a0f6b2c4d8e90123456789\Quests\back_room_etiquette.json" />
+    <None Include="db\CustomTrader\Tony\assort.json" />
+    <None Include="db\CustomTrader\Tony\base.json" />
     <None Include="tools\tarkovdev_items_cache.json" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="data\customquests\579dc571d53a0658a154fbec\Images\" />
-    <Folder Include="data\customquests\579dc571d53a0658a154fbec\Locales\" />
-    <Folder Include="data\customquests\579dc571d53a0658a154fbec\QuestAssort\" />
-    <Folder Include="data\customquests\579dc571d53a0658a154fbec\Quests\" />
-    <Folder Include="data\customquests\66a0f6b2c4d8e90123456789\Locales\" />
-    <Folder Include="data\customquests\66a0f6b2c4d8e90123456789\Images\" />
-    <Folder Include="data\customquests\66a0f6b2c4d8e90123456789\QuestAssort\" />
-    <Folder Include="data\customquests\66a0f6b2c4d8e90123456789\Quests\" />
+    <Folder Include="db\CustomItems\new\" />
+    <Folder Include="db\CustomQuests\579dc571d53a0658a154fbec\Images\" />
+    <Folder Include="db\CustomQuests\66a0f6b2c4d8e90123456789\Images\" />
+    <Folder Include="db\CustomQuests\66a0f6b2c4d8e90123456789\QuestAssort\" />
   </ItemGroup>
 
 	<PropertyGroup>

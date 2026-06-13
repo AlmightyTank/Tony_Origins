@@ -1,0 +1,46 @@
+{
+    "tarkovstreets": [
+        {
+            "locationId": "tony_concordia_security_ledger_spawn",
+            "probability": 1,
+            "template": {
+                "Id": "tony_concordia_security_ledger_spawn",
+                "IsContainer": false,
+                "useGravity": false,
+                "randomRotation": false,
+                "Position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "Rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "IsGroupPosition": false,
+                "GroupPositions": [],
+                "IsAlwaysSpawn": true,
+                "Root": "685000000000000000000202",
+                "Items": [
+                    {
+                        "_id": "685000000000000000000202",
+                        "_tpl": "685000000000000000000201",
+                        "upd": {
+                            "StackObjectsCount": 1,
+                            "SpawnedInSession": true
+                        }
+                    }
+                ]
+            },
+            "itemDistribution": [
+                {
+                    "composedKey": {
+                        "key": "685000000000000000000201"
+                    },
+                    "relativeProbability": 1
+                }
+            ]
+        }
+    ]
+}

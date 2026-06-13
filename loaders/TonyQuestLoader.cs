@@ -14,9 +14,8 @@ public class TonyQuestLoader(WTTServerCommonLib.WTTServerCommonLib wttCommon) : 
     {
         Assembly assembly = Assembly.GetExecutingAssembly();
 
-        await wttCommon.CustomQuestService.CreateCustomQuests(
-            assembly,
-            Path.Join("data", "customquests")
-        );
+        await wttCommon.CustomItemServiceExtended.CreateCustomItems(assembly);
+        await wttCommon.CustomLocaleService.CreateCustomLocales(assembly);
+        await wttCommon.CustomLootspawnService.CreateCustomLootSpawns(assembly);
     }
 }

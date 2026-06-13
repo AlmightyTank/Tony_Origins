@@ -1,0 +1,173 @@
+{
+    "685000000000000000000002": {
+        "QuestName": "Back Room Etiquette",
+        "_id": "685000000000000000000002",
+        "acceptPlayerMessage": "685000000000000000000002 acceptPlayerMessage",
+        "acceptanceAndFinishingSource": "eft",
+        "arenaLocations": [],
+        "canShowNotificationsInGame": true,
+        "changeQuestMessageText": "685000000000000000000002 changeQuestMessageText",
+        "completePlayerMessage": "685000000000000000000002 completePlayerMessage",
+        "conditions": {
+            "AvailableForFinish": [
+                {
+                    "conditionType": "CounterCreator",
+                    "counter": {
+                        "conditions": [
+                            {
+                                "conditionType": "Location",
+                                "dynamicLocale": false,
+                                "id": "685000000000000000000031",
+                                "target": [
+                                    "tarkovstreets"
+                                ]
+                            },
+                            {
+                                "conditionType": "VisitPlace",
+                                "dynamicLocale": false,
+                                "id": "685000000000000000000032",
+                                "target": "place_tony_backroom_streets"
+                            }
+                        ],
+                        "id": "685000000000000000000033"
+                    },
+                    "completeInSeconds": 0,
+                    "doNotResetIfCounterCompleted": true,
+                    "dynamicLocale": false,
+                    "globalQuestCounterId": "",
+                    "id": "685000000000000000000034",
+                    "index": 0,
+                    "isNecessary": false,
+                    "isResetOnConditionFailed": false,
+                    "oneSessionOnly": false,
+                    "parentId": "",
+                    "type": "Exploration",
+                    "value": 1,
+                    "visibilityConditions": []
+                },
+                {
+                    "conditionType": "CounterCreator",
+                    "counter": {
+                        "conditions": [
+                            {
+                                "conditionType": "Location",
+                                "dynamicLocale": false,
+                                "id": "685000000000000000000035",
+                                "target": [
+                                    "tarkovstreets"
+                                ]
+                            },
+                            {
+                                "conditionType": "ExitStatus",
+                                "dynamicLocale": false,
+                                "id": "685000000000000000000036",
+                                "status": [
+                                    "Survived"
+                                ]
+                            }
+                        ],
+                        "id": "685000000000000000000037"
+                    },
+                    "completeInSeconds": 0,
+                    "doNotResetIfCounterCompleted": false,
+                    "dynamicLocale": false,
+                    "globalQuestCounterId": "",
+                    "id": "685000000000000000000038",
+                    "index": 1,
+                    "isNecessary": false,
+                    "isResetOnConditionFailed": false,
+                    "oneSessionOnly": false,
+                    "parentId": "",
+                    "type": "Completion",
+                    "value": 1,
+                    "visibilityConditions": [
+                        {
+                            "conditionType": "CompleteCondition",
+                            "id": "685000000000000000000039",
+                            "target": "685000000000000000000034"
+                        }
+                    ]
+                }
+            ],
+            "AvailableForStart": [
+                {
+                    "availableAfter": 0,
+                    "conditionType": "Quest",
+                    "dispersion": 0,
+                    "dynamicLocale": false,
+                    "globalQuestCounterId": "",
+                    "id": "685000000000000000000040",
+                    "index": 0,
+                    "parentId": "",
+                    "status": [
+                        4
+                    ],
+                    "target": "685000000000000000000001",
+                    "visibilityConditions": []
+                }
+            ],
+            "Fail": []
+        },
+        "declinePlayerMessage": "685000000000000000000002 declinePlayerMessage",
+        "description": "685000000000000000000002 description",
+        "failMessageText": "685000000000000000000002 failMessageText",
+        "gameModes": [],
+        "image": "/files/quest/icon/596b465486f77457ca186188.jpg",
+        "instantComplete": false,
+        "isKey": false,
+        "location": "any",
+        "name": "685000000000000000000002 name",
+        "note": "685000000000000000000002 note",
+        "progressSource": "eft",
+        "rankingModes": [],
+        "restartable": false,
+        "rewards": {
+            "Fail": [],
+            "Started": [],
+            "Success": [
+                {
+                    "availableInGameEditions": [],
+                    "id": "685000000000000000000041",
+                    "index": 0,
+                    "type": "Experience",
+                    "unknown": false,
+                    "value": 2500
+                },
+                {
+                    "availableInGameEditions": [],
+                    "id": "685000000000000000000042",
+                    "index": 1,
+                    "target": "66a0f6b2c4d8e90123456789",
+                    "type": "TraderStanding",
+                    "unknown": false,
+                    "value": 0.02
+                },
+                {
+                    "availableInGameEditions": [],
+                    "findInRaid": false,
+                    "id": "685000000000000000000043",
+                    "index": 2,
+                    "items": [
+                        {
+                            "_id": "685000000000000000000044",
+                            "_tpl": "5449016a4bdc2d6f028b456f",
+                            "upd": {
+                                "StackObjectsCount": 35000
+                            }
+                        }
+                    ],
+                    "target": "685000000000000000000044",
+                    "type": "Item",
+                    "unknown": false,
+                    "value": 35000
+                }
+            ]
+        },
+        "secretQuest": false,
+        "side": "Pmc",
+        "startedMessageText": "685000000000000000000002 startedMessageText",
+        "successMessageText": "685000000000000000000002 successMessageText",
+        "traderId": "66a0f6b2c4d8e90123456789",
+        "type": "Exploration"
+    }
+}
