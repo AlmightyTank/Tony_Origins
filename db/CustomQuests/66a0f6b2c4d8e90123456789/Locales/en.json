@@ -5,12 +5,13 @@
     "685000000000000000000002 startedMessageText": "Go to Streets. Concordia security room. Find my ledger and bring it back clean.",
     "685000000000000000000002 successMessageText": "Good. That ledger in the wrong hands would have made problems. You followed instructions and kept your head down. That matters.",
     "685000000000000000000002 failMessageText": "You either lost the trail or made too much noise following it.",
-    "685000000000000000000002 acceptPlayerMessage": "I’ll get the ledger.",
+    "685000000000000000000002 acceptPlayerMessage": "Ill get the ledger.",
     "685000000000000000000002 declinePlayerMessage": "Not going into Concordia for that yet.",
-    "685000000000000000000002 completePlayerMessage": "Here’s your ledger.",
+    "685000000000000000000002 completePlayerMessage": "Heres your ledger.",
     "685000000000000000000002 changeQuestMessageText": "Tony wants the Concordia ledger recovered quietly.",
 
-    "685000000000000000000034": "Locate Tony's ledger in the Concordia security room",
+    "685000000000000000000034": "Locate the Concordia security room",
+    "685000000000000000000045": "Find Tony's security ledger",
     "685000000000000000000038": "Survive and extract from Streets",
-    "685000000000000000000045": "Hand over Tony's security ledger"
-}+
+    "685000000000000000000047": "Hand over Tony's security ledger"
+}

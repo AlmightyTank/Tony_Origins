@@ -1,0 +1,36 @@
+{
+    "685000000000000000000201 Name": "Volkov's Concordia ledger",
+    "685000000000000000000201 ShortName": "Ledger",
+    "685000000000000000000201 Description": "An old security ledger from Concordia. It contains names, room numbers, camera notes, payoff records, and routes connected to Tony Volkov's people.",
+
+    "685000000000000000000001 name": "A Friend of a Friend",
+    "685000000000000000000001 description": "You want to meet Tony Volkov? That is not a man you walk up to. He does not trust clean hands, and he does not trust people who still think this place has rules. Bring me something worth his attention, then go to Customs dressed like one of my people. Kill PMCs while wearing scav colors. Show him you can work dirty and walk away alive.",
+    "685000000000000000000001 note": "Fence wants proof that you can blend in with Scavs and do ugly work without hesitation.",
+    "685000000000000000000001 startedMessageText": "Go to Customs. Wear the scav kit. Kill PMCs. Survive if you can. Tony will hear about it.",
+    "685000000000000000000001 successMessageText": "Good. You looked like trash, moved like trash, and still put PMCs in the ground. Tony respects that kind of work. He will speak with you now.",
+    "685000000000000000000001 failMessageText": "You made noise, but not the kind that opens doors.",
+    "685000000000000000000001 acceptPlayerMessage": "Fine. Ill do it.",
+    "685000000000000000000001 declinePlayerMessage": "Not touching that yet.",
+    "685000000000000000000001 completePlayerMessage": "Its done. Customs is cleaner now.",
+    "685000000000000000000001 changeQuestMessageText": "Fence is watching how you handle this.",
+
+    "685000000000000000000011": "Hand over 1 Roler Submariner gold wrist watch",
+    "685000000000000000000012": "Eliminate 8 PMCs on Customs while wearing a Scav vest and Ushanka",
+    "685000000000000000000013": "Survive and extract from Customs",
+
+    "685000000000000000000002 name": "Back Room Etiquette",
+    "685000000000000000000002 description": "Concordia had security before it had ghosts. Cameras, guards, records, keys, people who looked the other way when paid. One of my old ledgers is still sitting in that security room. Names, routes, rooms, things that should not be read by strangers. Go to Streets, find the Concordia security room, recover the ledger, and leave alive. Do not make a scene.",
+    "685000000000000000000002 note": "Tony wants you to recover an old security ledger from the Concordia security room on Streets.",
+    "685000000000000000000002 startedMessageText": "Go to Streets. Concordia security room. Find my ledger and bring it back clean.",
+    "685000000000000000000002 successMessageText": "Good. That ledger in the wrong hands would have made problems. You followed instructions and kept your head down. That matters.",
+    "685000000000000000000002 failMessageText": "You either lost the trail or made too much noise following it.",
+    "685000000000000000000002 acceptPlayerMessage": "Ill get the ledger.",
+    "685000000000000000000002 declinePlayerMessage": "Not going into Concordia for that yet.",
+    "685000000000000000000002 completePlayerMessage": "Heres your ledger.",
+    "685000000000000000000002 changeQuestMessageText": "Tony wants the Concordia ledger recovered quietly.",
+
+    "685000000000000000000034": "Locate the Concordia security room",
+    "685000000000000000000045": "Find Tony's security ledger",
+    "685000000000000000000038": "Survive and extract from Streets",
+    "685000000000000000000047": "Hand over Tony's security ledger"
+}

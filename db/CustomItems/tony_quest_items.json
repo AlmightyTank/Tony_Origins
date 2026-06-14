@@ -10,7 +10,9 @@
             "Weight": 0.2,
             "StackMaxSize": 1,
             "DiscardingBlock": true,
-            "CanSellOnRagfair": false
+            "CanSellOnRagfair": false,
+            "isQuestItem": true,
+            "QuestItem": true
         },
         "locales": {
             "en": {
@@ -20,6 +22,7 @@
             }
         },
         "fleaPriceRoubles": 1,
+        "handbookPriceRoubles": 1,
         "addtoItemBlacklist": true
     }
 }
