@@ -205,16 +205,16 @@
     },
     {
         "OfferId": "92c625a05c753d80bf7e80b4",
-        "TplId": "5c0e5bab86f77461f55ed1f3",
-        "ItemName": "6B23-1 body armor (EMR)",
-        "Price": 25077,
+        "TplId": "5c0e57ba86f7747fa141986d",
+        "ItemName": "6B23-2 body armor (Mountain Flora)",
+        "Price": 34794,
         "Currency": "RUB",
         "CashOnly": false,
         "BarterScheme": [
             [
                 {
-                    "TplId": "5d40419286f774318526545f",
-                    "ItemName": "Metal cutting scissors",
+                    "TplId": "5d40407c86f774318526545a",
+                    "ItemName": "Bottle of Tarkovskaya vodka",
                     "Count": 1
                 }
             ]
@@ -524,8 +524,8 @@
         "BarterScheme": [
             [
                 {
-                    "TplId": "54cb57776803fa99248b456e",
-                    "ItemName": "UNKNOWN_ITEM_54cb57776803fa99248b456e",
+                    "TplId": "590a3d9c86f774385926e510",
+                    "ItemName": "Ultraviolet lamp",
                     "Count": 1
                 }
             ]
