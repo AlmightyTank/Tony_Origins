@@ -1,165 +1,337 @@
-# YetAnotherTraderMod - Tony Trader
+YATMMedved - Medved Cell
 
-Server-side custom trader mod for SPT 4.0.11.
+Custom boss and rival-cell expansion for SPT 4.0.13.
 
-## Overview
+Overview
 
-YetAnotherTraderMod adds a new trader to SPT: **Tony Volkov**, a former BEAR operator turned back-room fixer with deep Russian underworld connections.
+YATMMedved adds Medved Cell to SPT: a hostile BEAR-linked rival faction tied to Tony Volkov and the YetAnotherTraderMod questline.
 
-Tony operates through old criminal contacts, smugglers, ex-PMCs, and forgotten military supply routes. He deals in practical gear, weapons, armor, medical supplies, ammo, plates, and equipment for PMCs who can pay his price.
+Medved Cell is not a normal trader add-on. It is a progression-based boss system that makes Tony’s enemies grow stronger as the player advances through Tony’s main questline.
 
-As of **v0.0.4**, Tony is no longer just a rename/rebrand pass. The mod now includes a working trader setup with four loyalty levels, purchasable inventory, barter offers, insurance support, and repair support.
+At first, Medved Cell operates quietly around Reserve. As Tony’s network expands and the player completes more of his work, Medved Cell begins appearing on more maps, in more zones, and with stronger difficulty settings.
 
-## Current Trader Identity
+The mod adds a custom boss squad built around Sokol, with Buran and Kedr acting as his support.
 
-* Name: Tony
-* Surname: Volkov
-* Nickname: Tony
-* Location: A locked back room beneath Tarkov.
-* Avatar: `data/Tony.jpg`
-* Trader ID: `66a0f6b2c4d8e90123456789`
+Current Medved Cell Identity
 
-The trader ID is currently kept the same so existing assort, profile, and trader references do not break.
+- Faction name: Medved Cell
+- Main boss: Sokol
+- Followers: Buran and Kedr
+- Theme: BEAR-linked rival cell
+- Role: Tony’s enemy faction / pressure system
+- Progression: Tied to Tony main quest completion
+- Main folder: "YATMMedved"
 
-## Current Features
+Medved Cell is designed as a side/rival system for Tony. It does not replace Tony’s main questline.
 
-* Custom trader: Tony Volkov
-* Four loyalty levels
-* Mixed cash and barter inventory
-* Purchasable weapons and weapon parts
-* Armor, rigs, helmets, and armor plates
-* Basic meds, food, and drinks
-* Ammo options across progression
-* Ruble purchase options
-* Selected barter offers
-* Insurance support
-* Repair support
-* Russian, scav, and black-market themed trader identity
+Current Features
 
-## Loyalty Level Direction
+- Custom Medved Cell boss system
+- Custom boss: Sokol
+- Custom followers: Buran and Kedr
+- Quest-based progression
+- Stage-based map expansion
+- Stage-based difficulty changes
+- Configurable spawn behavior
+- Configurable boss and follower settings
+- Custom bot profiles
+- Custom loadouts
+- Custom equipment pools
+- Custom weapon pools
+- MoreBotsAPI custom bot type support
+- Designed to work with YetAnotherTraderMod / Tony
+- WTT support requirement
 
-### LL1
+How Medved Cell Works
 
-* Basic meds
-* Food and drinks
-* Low-tier ammo
-* Low-tier armor and rigs
-* Basic weapon parts
-* Early PMC survival gear
+Medved Cell uses Tony quest progression to decide how active the boss squad should be.
 
-### LL2
+As the player completes key Tony main quests, Medved Cell unlocks new stages. Each stage can change:
 
-* Better ammo options
-* Armor plates
-* Improved weapon parts
-* Mid-tier armor and equipment
-* Practical attachments and supplies
+- Which maps Medved Cell can appear on
+- Which zones Medved Cell can spawn in
+- How difficult Sokol and his followers are
+- Whether the group feels early-game, mid-game, or late-game
+- How much pressure Medved Cell applies to the player
 
-### LL3
+The progression system should only control boss activity, map availability, spawn zones, and difficulty. Tony’s main questline stays separate.
 
-* Better weapons
-* Mid-tier and higher-value gear
-* Stronger armor options
-* Rare barter items
-* More specialized equipment
+Default Progression Direction
 
-### LL4
+Stage| Unlock Condition| Maps| Difficulty
+Stage 0| Default / before progression| Reserve| Easy
+Stage 1| After Tony Quest 15| Reserve, Customs| Easy
+Stage 2| After Tony Quest 19| Reserve, Customs| Normal
+Stage 3| After Tony Quest 23| Reserve, Customs, Interchange| Normal
+Stage 4| After Tony Quest 28| Reserve, Customs, Interchange, Streets| Hard
+Stage 5| Late Tony progression| Reserve, Customs, Interchange, Streets| Hard / Endgame tuning
 
-* High-end ammo
-* Better rigs and armor
-* Stronger weapons
-* Exclusive kits and late-game gear options
-* Limited high-value equipment
+The exact quest IDs can be changed in the config.
 
-## Requirements
+Boss Squad
 
-* SPT 4.0.11 server
-* .NET 9 SDK for building from source
-* Windows recommended
+Sokol
 
-## Build
+Sokol is the leader of Medved Cell and the main boss of the squad.
 
-```powershell
-dotnet build -c Release
-```
+He represents the organized side of the group: better planning, stronger gear, and the command role inside the cell.
 
-The build output will be placed in:
+Buran
 
-```text
-bin\Release\
-```
+Buran is a heavy support follower.
 
-## Install
+He is intended to make the squad harder to push directly and gives Sokol a stronger front-line presence.
+
+Kedr
+
+Kedr is a mobile support follower.
+
+He is intended to make the group less predictable and give the squad more pressure during fights.
+
+Requirements
+
+- SPT 4.0.13 server
+- YetAnotherTraderMod / Tony
+- MoreBotsAPI
+- WTT - Server Common Library
+
+Make sure all dependencies match the SPT version used by this release.
+
+Install
 
 1. Close the SPT server.
-2. Download or build the mod.
-3. Copy the mod folder into:
 
-```text
-<SPT>\user\mods\YetAnotherTraderMod
-```
+2. Install WTT - Server Common Library.
 
-The final installed path should look like:
+3. Install MoreBotsAPI.
 
-```text
-SPT/user/mods/YetAnotherTraderMod
-```
+4. Install YetAnotherTraderMod / Tony.
 
-The installed folder should contain the mod DLL, package file, data files, and config files, including:
+5. Download the latest YATMMedved / Medved Cell release.
 
-```text
+6. Extract the release into your SPT root folder.
+
+Your SPT folder should contain files and folders like:
+
+EscapeFromTarkov.exe
+SPT.Server.exe
+user/
+
+The final installed server mod path should look like:
+
+SPT/user/mods/YATMMedved
+
+The installed folder should contain the mod files, package file, config files, database files, and compiled DLL, depending on the package setup.
+
+Typical files and folders may include:
+
 package.json
-data\base.json
-data\assort.json
-data\Tony.jpg
-config\settings.json
-config\items.json
-```
+config/
+db/
+src/
+YATMMedved.dll
 
-Depending on the build/package setup, the compiled DLL should also be present in the root of the mod folder.
+7. Start the SPT server.
 
-## Planned Features
+8. Check the server console for Medved Cell startup logs.
 
-The following features are planned for future versions and are not current v0.0.4 content:
+9. Launch the game.
 
-* Full Tony questline
-* Quest-based trader progression
-* Quest-locked inventory unlocks
-* Side quests tied to cheaper deals
-* Barter-to-cash unlocks after quest completion
-* More custom quest items
-* More Tony-themed weapon presets
-* Special shady item unlocks
-* Themed gear bundles
-* Expanded lore and trader messages
-* Better long-term inventory balance
-* More custom weapons and modded gear support
+Configuration
 
-## Planned Quest Direction
+The main config is located in the Medved Cell mod folder.
 
-Tony�s future questline will focus on his criminal network, old BEAR routes, blackmail, dead drops, supply caches, and favors owed across Tarkov.
+Typical path:
 
-Planned quest themes include:
+SPT/user/mods/YATMMedved/config/config.json
 
-* Getting introduced to Tony through Fence
-* Recovering Tony�s old ledger
-* Moving blackmail through dead drops
-* Planting Tony�s calling card
-* Collecting street tax
-* Following old BEAR trails
-* Recovering buried military crates
-* Marking forgotten supply caches
-* Unlocking cheaper parts, ammo, suppressors, and special deals
+The exact config file name may vary depending on the release.
 
-## Notes
+Quest Progression Config
 
-This is a **beta release**. Inventory, balance, prices, trader services, and progression are subject to change.
+Quest progression controls when Medved Cell expands.
 
-Quest unlocks, full quest progression, side quests, and advanced trader progression are planned for later versions.
+Example:
 
-## Credits
+{
+  "QuestProgression": {
+    "Enabled": true,
+    "Stages": [
+      {
+        "Name": "Stage 1 - First Medved Movement",
+        "QuestId": "TONY_MAIN_QUEST_15_ID"
+      },
+      {
+        "Name": "Stage 2 - Medved Pressure",
+        "QuestId": "TONY_MAIN_QUEST_19_ID"
+      },
+      {
+        "Name": "Stage 3 - Medved Expansion",
+        "QuestId": "TONY_MAIN_QUEST_23_ID"
+      },
+      {
+        "Name": "Stage 4 - Medved Lockdown",
+        "QuestId": "TONY_MAIN_QUEST_28_ID"
+      }
+    ]
+  }
+}
 
-* Original Priscilu Origins foundation: Reis
-* Update/contributor foundation: Anigx
-* Tony concept, code, and current development: AlMightyTank
-* Thanks to the SPT community for ongoing support
+Replace the placeholder quest IDs with the actual Tony quest IDs used by your install.
+
+Common Config Options
+
+Depending on the release, the config may include options like:
+
+{
+  "Enabled": true,
+  "Debug": false,
+  "QuestProgression": {
+    "Enabled": true
+  },
+  "Spawns": {
+    "Enabled": true
+  },
+  "Bosses": {
+    "Sokol": {
+      "Enabled": true
+    },
+    "Buran": {
+      "Enabled": true
+    },
+    "Kedr": {
+      "Enabled": true
+    }
+  }
+}
+
+Spawn Tuning
+
+Spawn settings may include:
+
+- Boss spawn chance
+- Allowed maps
+- Allowed zones
+- Boss difficulty
+- Escort count
+- Follower settings
+- Stage-based overrides
+
+If Medved Cell is too common, lower the spawn chance.
+
+If Medved Cell is too easy, increase later-stage difficulty or allow harder stages earlier.
+
+If Sokol spawns without support, check the follower and escort settings.
+
+Recommended Load Order
+
+Recommended install order:
+
+1. SPT
+2. WTT - Server Common Library
+3. MoreBotsAPI
+4. YetAnotherTraderMod / Tony
+5. YATMMedved / Medved Cell
+
+Mods that edit boss waves, bot types, or map spawn settings may conflict with Medved Cell.
+
+Troubleshooting
+
+Sokol spawns alone
+
+Check that:
+
+- MoreBotsAPI is installed and loading
+- Buran and Kedr are enabled
+- The follower bot type names match the spawn config
+- Escort count is greater than "0"
+- The active progression stage allows followers
+- Another mod is not overwriting the boss wave
+
+Medved Cell does not spawn
+
+Check that:
+
+- The mod is enabled
+- Spawn chance is not set to "0"
+- The current map is allowed by the active stage
+- The required Tony quest stage has been completed
+- The server console shows Medved Cell loading successfully
+- MoreBotsAPI is installed correctly
+
+Server errors on startup
+
+Check that:
+
+- You installed the correct version for your SPT version
+- WTT - Server Common Library is installed
+- MoreBotsAPI is installed
+- YetAnotherTraderMod / Tony is installed
+- JSON config files are valid
+- No trailing commas were added to config files
+
+Bot type errors
+
+If the game reports missing or invalid bot types, check that:
+
+- MoreBotsAPI is installed
+- The Medved Cell package was extracted correctly
+- Custom bot type files are present
+- No other mod is replacing the same bot type setup
+
+Compatibility Notes
+
+Medved Cell may conflict with mods that heavily edit:
+
+- Boss spawns
+- Bot waves
+- Custom bot types
+- MoreBotsAPI registrations
+- Map boss zone configs
+- Bot loadouts
+- Bot equipment generation
+
+If you use multiple bot overhaul mods, check your server logs carefully.
+
+Planned Features
+
+The following features may be expanded in future versions:
+
+- More Sokol, Buran, and Kedr loadout variety
+- More map-specific spawn zones
+- More progression-based gear tuning
+- More Tony dialogue and lore tied to Medved Cell
+- Better long-term balance
+- Additional rewards or unlocks tied to defeating Medved Cell
+
+Notes
+
+This is a beta release. Spawn balance, difficulty, equipment, progression stages, and compatibility are subject to change.
+
+Medved Cell is meant to create pressure during Tony’s questline. If the squad feels too common or too strong, adjust the config before changing other bot mods.
+
+Credits
+
+- Original Priscilu Origins foundation: Reis
+- Work on The Trader Priscilu: Anigx
+- Tony concept, code, and current development: AlMightyTank
+- MoreBotsAPI team / contributors for custom bot type and spawn support
+- WTT team / contributors for shared server-side mod support
+- SPT community for ongoing support and feedback
+
+Links
+
+- SPT: "https://sp-tarkov.com/"
+- MoreBotsAPI: "https://forge.sp-tarkov.com/mod/2426/morebotsapi"
+- YetAnotherTraderMod / Tony: "https://forge.sp-tarkov.com/mod/2185/yetanothertradermod"
+- WTT - Server Common Library: "https://forge.sp-tarkov.com/mod/2310/wtt-commonlib"
+- Medved Cell: "ADD_MEDVED_CELL_LINK_HERE"
+- Support / Discord: "https://discord.gg/bUuJ7JzgUb"
+
+Disclaimer
+
+This mod is made for SPT and is not affiliated with Battlestate Games.
+
+Do not use this mod with live Escape from Tarkov.
+
+Escape from Tarkov is property of Battlestate Games.
